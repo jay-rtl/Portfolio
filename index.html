@@ -1,672 +1,1153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Jay Rotol | High-Performance Web & IT Systems</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jay Rotol | Premium Web Design & IT Systems</title>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="icon" href="FR.png" type="image/png" />
+  <link rel="icon" href="FR.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<style>
-body{
-    html {
-  scroll-behavior: smooth;
-}
-  margin:0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background:#0b0f1a;
-  color:#e5e7eb;
-}
+  <style>
+    :root{
+      --black:#030712;
+      --dark:#070b16;
+      --navy:#0f1b35;
+      --navy-soft:#14213d;
+      --blue:#2563eb;
+      --blue-light:#60a5fa;
+      --white:#ffffff;
+      --muted:#94a3b8;
+      --soft:#cbd5e1;
+      --border:rgba(255,255,255,0.09);
+      --glass:rgba(255,255,255,0.045);
+      --shadow:0 30px 80px rgba(0,0,0,0.45);
+    }
 
-/* NAV */
-nav{
-  position:fixed;
-  width:100%;
-  top:0;
-  background: rgba(10,15,25,0.75);
-  backdrop-filter: blur(16px);
-  border-bottom:1px solid rgba(255,255,255,0.06);
-  z-index:999;
-}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-nav a{
-  color:#cbd5e1;
-  margin-left:18px;
-  text-decoration:none;
-  font-weight:500;
-}
+    html{
+      scroll-behavior:smooth;
+    }
 
-nav a:hover{
-  color:#60a5fa;
-}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--black);
+      color:var(--white);
+      overflow-x:hidden;
+    }
 
-/* HERO */
-.hero{
-  text-align:center;
-  padding:0 20px;
-  height:80vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(59,130,246,0.18), transparent 35%),
-    radial-gradient(circle at 80% 60%, rgba(16,185,129,0.12), transparent 40%);
-}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,0.18), transparent 32%),
+        radial-gradient(circle at 80% 20%, rgba(15,27,53,0.8), transparent 34%),
+        linear-gradient(180deg,#030712 0%,#071020 50%,#030712 100%);
+      z-index:-3;
+    }
 
-.hero h1{
-  font-size:3.2rem;
-  font-weight:800;
-  letter-spacing:-1px;
-}
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
 
-.hero p{
-  max-width:800px;
-  margin:20px auto;
-  color:#a5b4fc;
-  font-size:1.1rem;
-}
+    img{
+      max-width:100%;
+      display:block;
+    }
 
-/* BUTTONS */
-.btn-primary{
-  background:#3b82f6;
-  border:none;
-  padding:12px 26px;
-  border-radius:999px;
-  font-weight:600;
-}
+    .container{
+      width:min(1180px,92%);
+      margin:0 auto;
+    }
 
-.btn-outline{
-  border:1px solid #334155;
-  padding:12px 26px;
-  border-radius:999px;
-  color:#e5e7eb;
-}
+    .section{
+      padding:130px 0;
+      position:relative;
+    }
 
-/* SECTIONS */
-section{
-  padding:90px 20px;
-}
+    .section::after{
+      content:"";
+      position:absolute;
+      bottom:0;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(1180px,92%);
+      height:1px;
+      background:linear-gradient(90deg,transparent,var(--border),transparent);
+    }
 
-.container{
-  max-width:1050px;
-}
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:rgba(255,255,255,0.04);
+      color:var(--blue-light);
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:0.04em;
+      text-transform:uppercase;
+      margin-bottom:18px;
+    }
 
-/* CARDS */
-.card{
-  background:#111827;
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:18px;
-  padding:25px;
-  transition:0.3s ease;
-}
+    .section-header{
+      text-align:center;
+      max-width:760px;
+      margin:0 auto 55px;
+    }
 
-.card:hover{
-  transform:translateY(-6px);
-  border-color: rgba(59,130,246,0.4);
-}
+    .section-header h2{
+      font-size:clamp(2.2rem,4vw,3.6rem);
+      line-height:1.05;
+      letter-spacing:-0.06em;
+      margin-bottom:18px;
+    }
 
-h2{
-  text-align:center;
-  font-weight:700;
-}
+    .section-header p{
+      color:var(--muted);
+      font-size:1.05rem;
+      line-height:1.7;
+    }
 
-.sub{
-  text-align:center;
-  color:#94a3b8;
-  margin-bottom:40px;
-}
+    .gradient-text{
+      background:linear-gradient(90deg,#ffffff,#93c5fd,#60a5fa);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
 
-/* PRICE */
-.price{
-  font-size:2rem;
-  font-weight:800;
-  color:#60a5fa;
-}
+    /* NAVIGATION */
+    .navbar{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:999;
+      padding:20px 0;
+      background:rgba(3,7,18,0.72);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+    }
 
-/* CTA */
-.cta{
-  text-align:center;
-  background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(16,185,129,0.05));
-  border-top:1px solid rgba(255,255,255,0.05);
-}
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
 
-footer{
-  text-align:center;
-  padding:30px;
-  color:#64748b;
-  font-size:13px;
-}
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:900;
+      letter-spacing:-0.03em;
+      font-size:1.1rem;
+    }
 
-#portfolio .card{
-  background:#111827;
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:18px;
-  overflow:hidden;
-  transition:0.3s ease;
-}
+    .logo-mark{
+      width:40px;
+      height:40px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,#ffffff,#1e3a8a);
+      color:#030712;
+      box-shadow:0 10px 30px rgba(37,99,235,0.28);
+      font-weight:900;
+    }
 
-#portfolio .card:hover{
-  transform:translateY(-8px);
-  border-color: rgba(59,130,246,0.4);
-}
+    .nav-links{
+      display:flex;
+      list-style:none;
+      gap:28px;
+      align-items:center;
+    }
 
-#portfolio .card-img-top{
-  height:220px;
-  object-fit:cover;
-}
+    .nav-links a{
+      color:var(--soft);
+      font-size:14px;
+      font-weight:600;
+      position:relative;
+      transition:0.3s ease;
+    }
 
-.testimonial-card{
-  background:#111827;
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:18px;
-  transition:0.3s ease;
-}
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-8px;
+      width:0;
+      height:2px;
+      background:var(--blue-light);
+      transition:0.3s ease;
+    }
 
-.testimonial-card:hover{
-  transform:translateY(-6px);
-  border-color: rgba(59,130,246,0.4);
-}
+    .nav-links a:hover{
+      color:var(--white);
+    }
 
-.testimonial-card.featured{
-  border:1px solid rgba(59,130,246,0.5);
-  box-shadow: 0 20px 50px rgba(59,130,246,0.15);
-}
-.navbar {
-  background: rgba(10,15,25,0.75);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
+    .nav-links a:hover::after{
+      width:100%;
+    }
 
-.navbar-nav .nav-link {
-  color: #cbd5e1 !important;
-  font-weight: 500;
-}
+    .mobile-toggle{
+      display:none;
+      width:44px;
+      height:44px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:rgba(255,255,255,0.04);
+      color:var(--white);
+      font-size:1.2rem;
+      cursor:pointer;
+    }
 
-.navbar-nav .nav-link:hover {
-  color: #60a5fa !important;
-}
-</style>
+    /* HERO */
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      position:relative;
+      overflow:hidden;
+      padding-top:90px;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      width:760px;
+      height:760px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(37,99,235,0.32),transparent 70%);
+      filter:blur(80px);
+      right:-240px;
+      top:5%;
+      z-index:-1;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size:70px 70px;
+      mask-image:linear-gradient(to bottom,rgba(0,0,0,0.7),transparent 75%);
+      z-index:-2;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:60px;
+      align-items:center;
+    }
+
+    .hero-content h1{
+      font-size:clamp(3rem,7vw,6.7rem);
+      line-height:0.93;
+      letter-spacing:-0.08em;
+      font-weight:900;
+      margin-bottom:24px;
+    }
+
+    .hero-content p{
+      max-width:690px;
+      color:var(--soft);
+      font-size:1.14rem;
+      line-height:1.8;
+      margin-bottom:34px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:42px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:15px 26px;
+      border-radius:16px;
+      font-weight:800;
+      font-size:14px;
+      transition:0.3s ease;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#2563eb,#1e40af);
+      color:#fff;
+      box-shadow:0 18px 45px rgba(37,99,235,0.34);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-4px);
+      box-shadow:0 25px 60px rgba(37,99,235,0.48);
+    }
+
+    .btn-outline{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,0.04);
+      color:#fff;
+    }
+
+    .btn-outline:hover{
+      transform:translateY(-4px);
+      border-color:rgba(96,165,250,0.65);
+      background:rgba(37,99,235,0.12);
+    }
+
+    .hero-stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      max-width:650px;
+    }
+
+    .stat-box{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,0.035);
+      border-radius:22px;
+      padding:20px;
+      backdrop-filter:blur(16px);
+    }
+
+    .stat-box h3{
+      font-size:1.7rem;
+      margin-bottom:6px;
+    }
+
+    .stat-box p{
+      font-size:13px;
+      color:var(--muted);
+      margin:0;
+      line-height:1.5;
+    }
+
+    .hero-card{
+      position:relative;
+      padding:28px;
+      border-radius:34px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.025));
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(20px);
+    }
+
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      border-radius:34px;
+      padding:1px;
+      background:linear-gradient(135deg,rgba(255,255,255,0.25),rgba(37,99,235,0.35),transparent);
+      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+    }
+
+    .browser-bar{
+      display:flex;
+      gap:8px;
+      margin-bottom:22px;
+    }
+
+    .dot{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.18);
+    }
+
+    .preview-box{
+      min-height:420px;
+      border-radius:24px;
+      background:
+        linear-gradient(160deg,rgba(15,27,53,0.95),rgba(3,7,18,0.95)),
+        url('img/webs2.png');
+      background-size:cover;
+      background-position:center;
+      border:1px solid var(--border);
+      padding:28px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .preview-box::after{
+      content:"";
+      position:absolute;
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      background:rgba(37,99,235,0.28);
+      filter:blur(70px);
+      right:-70px;
+      bottom:-70px;
+    }
+
+    .preview-top{
+      position:relative;
+      z-index:2;
+    }
+
+    .preview-top span{
+      display:inline-block;
+      margin-bottom:12px;
+      color:var(--blue-light);
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .preview-top h3{
+      font-size:2rem;
+      line-height:1.1;
+      letter-spacing:-0.05em;
+    }
+
+    .preview-bottom{
+      position:relative;
+      z-index:2;
+      display:grid;
+      gap:12px;
+    }
+
+    .mini-line{
+      height:12px;
+      border-radius:20px;
+      background:rgba(255,255,255,0.15);
+    }
+
+    .mini-line:nth-child(1){width:85%;}
+    .mini-line:nth-child(2){width:65%;}
+    .mini-line:nth-child(3){width:75%;}
+
+    /* GRID / CARDS */
+    .grid-4{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:22px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:24px;
+    }
+
+    .card{
+      background:var(--glass);
+      border:1px solid var(--border);
+      border-radius:28px;
+      padding:30px;
+      transition:0.35s ease;
+      position:relative;
+      overflow:hidden;
+      backdrop-filter:blur(18px);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at top right,rgba(37,99,235,0.15),transparent 40%);
+      opacity:0;
+      transition:0.35s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+      border-color:rgba(96,165,250,0.45);
+      box-shadow:0 25px 70px rgba(0,0,0,0.38);
+    }
+
+    .card:hover::before{
+      opacity:1;
+    }
+
+    .card > *{
+      position:relative;
+      z-index:1;
+    }
+
+    .icon{
+      width:52px;
+      height:52px;
+      display:grid;
+      place-items:center;
+      border-radius:18px;
+      background:rgba(37,99,235,0.13);
+      color:var(--blue-light);
+      font-size:1.25rem;
+      margin-bottom:24px;
+      border:1px solid rgba(96,165,250,0.18);
+    }
+
+    .card h3,
+    .card h5{
+      font-size:1.2rem;
+      margin-bottom:12px;
+      letter-spacing:-0.03em;
+    }
+
+    .card p{
+      color:var(--muted);
+      line-height:1.7;
+      font-size:0.96rem;
+    }
+
+    /* PRICING */
+    .pricing-card{
+      min-height:100%;
+    }
+
+    .pricing-card.featured{
+      border-color:rgba(96,165,250,0.55);
+      background:linear-gradient(180deg,rgba(37,99,235,0.13),rgba(255,255,255,0.035));
+      box-shadow:0 28px 80px rgba(37,99,235,0.16);
+    }
+
+    .badge{
+      display:inline-block;
+      color:#fff;
+      background:rgba(37,99,235,0.22);
+      border:1px solid rgba(96,165,250,0.3);
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      margin-bottom:18px;
+    }
+
+    .price{
+      font-size:clamp(2rem,4vw,3rem);
+      font-weight:900;
+      letter-spacing:-0.06em;
+      margin:18px 0;
+      color:#fff;
+    }
+
+    .price span{
+      font-size:1rem;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:0;
+    }
+
+    .feature-list{
+      list-style:none;
+      display:grid;
+      gap:13px;
+      margin-top:24px;
+    }
+
+    .feature-list li{
+      display:flex;
+      gap:10px;
+      color:var(--soft);
+      font-size:0.95rem;
+    }
+
+    .feature-list i{
+      color:var(--blue-light);
+      margin-top:3px;
+    }
+
+    /* PORTFOLIO */
+    .portfolio-card{
+      padding:0;
+      overflow:hidden;
+    }
+
+    .portfolio-img{
+      height:250px;
+      overflow:hidden;
+      background:var(--navy);
+    }
+
+    .portfolio-img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:0.55s ease;
+    }
+
+    .portfolio-card:hover img{
+      transform:scale(1.08);
+    }
+
+    .portfolio-content{
+      padding:28px;
+    }
+
+    .portfolio-content h3{
+      margin-bottom:12px;
+      letter-spacing:-0.04em;
+    }
+
+    .portfolio-content p{
+      color:var(--muted);
+      line-height:1.7;
+      margin-bottom:22px;
+    }
+
+    .project-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--blue-light);
+      font-weight:800;
+      font-size:14px;
+    }
+
+    /* TESTIMONIALS */
+    .testimonial-featured{
+      max-width:900px;
+      margin:0 auto 26px;
+      padding:44px;
+    }
+
+    .quote{
+      font-size:1.25rem;
+      line-height:1.8;
+      color:#e5e7eb;
+      margin-bottom:28px;
+    }
+
+    .client-name{
+      font-weight:900;
+      font-size:1.1rem;
+    }
+
+    .client-role{
+      color:var(--muted);
+      font-size:0.92rem;
+      margin-top:4px;
+    }
+
+    /* CONTACT */
+    .contact-section{
+      padding:140px 0;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .contact-box{
+      max-width:900px;
+      margin:0 auto;
+      border:1px solid var(--border);
+      border-radius:38px;
+      padding:70px 40px;
+      background:
+        radial-gradient(circle at top,rgba(37,99,235,0.18),transparent 45%),
+        rgba(255,255,255,0.04);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+    }
+
+    .contact-box h2{
+      font-size:clamp(2.6rem,5vw,5rem);
+      line-height:1;
+      letter-spacing:-0.08em;
+      margin-bottom:22px;
+    }
+
+    .contact-box p{
+      color:var(--muted);
+      max-width:640px;
+      margin:0 auto 32px;
+      line-height:1.8;
+      font-size:1.05rem;
+    }
+
+    .contact-actions{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    footer{
+      text-align:center;
+      padding:34px 20px;
+      color:var(--muted);
+      font-size:14px;
+      border-top:1px solid var(--border);
+      background:rgba(3,7,18,0.8);
+    }
+
+    .fade-up{
+      opacity:0;
+      transform:translateY(30px);
+      transition:0.7s ease;
+    }
+
+    .fade-up.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media(max-width:1000px){
+      .hero-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-card{
+        max-width:620px;
+      }
+
+      .grid-4,
+      .grid-3{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:760px){
+      .mobile-toggle{
+        display:grid;
+        place-items:center;
+      }
+
+      .nav-links{
+        position:absolute;
+        top:82px;
+        left:4%;
+        width:92%;
+        flex-direction:column;
+        align-items:flex-start;
+        background:rgba(3,7,18,0.96);
+        border:1px solid var(--border);
+        border-radius:24px;
+        padding:24px;
+        display:none;
+      }
+
+      .nav-links.active{
+        display:flex;
+      }
+
+      .hero{
+        padding-top:120px;
+      }
+
+      .hero-content h1{
+        font-size:3.4rem;
+      }
+
+      .hero-stats{
+        grid-template-columns:1fr;
+      }
+
+      .grid-4,
+      .grid-3{
+        grid-template-columns:1fr;
+      }
+
+      .section{
+        padding:90px 0;
+      }
+
+      .preview-box{
+        min-height:330px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- NAV -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-  <div class="container">
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="logo">
+        <span class="logo-mark">JR</span>
+        <span>Jay Rotol</span>
+      </a>
 
-    <a class="navbar-brand text-white font-weight-bold" href="#">
-      Jay Rotol
-    </a>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Open navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMenu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
-      <ul class="navbar-nav">
-
-        <li class="nav-item">
-          <a class="nav-link" href="#services">Services</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="#pricing">Pricing</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="#portfolio">Portfolio</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="#Testimonials">Testimonials</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="#contact">Contact</a>
-        </li>
-
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
-
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-<h1>High-Performance Websites & IT Systems That Drive Business Growth</h1>
-
-<p>
-I help businesses in the US build fast, conversion-focused websites and reliable IT systems that increase leads, improve operations, and reduce downtime.
-</p>
-
-<a href="#contact" class="btn btn-primary m-2">Book Consultation</a>
-<a href="#pricing" class="btn btn-outline m-2">View Pricing</a>
-</section>
-
-<!-- EXPERTISE TOOLS -->
-<section id="tools">
-<div class="container">
-
-<h2>Tools & Platforms I Work With</h2>
-<p class="sub">Modern tools used to build fast, scalable, and professional digital systems</p>
-
-<div class="row text-center">
-
-<div class="col-md-3 mb-4">
-<div class="card">
-<h5>Canva</h5>
-<p>Design for branding, marketing assets, and social media visuals.</p>
-</div>
-</div>
-
-<div class="col-md-3 mb-4">
-<div class="card">
-<h5>CapCut</h5>
-<p>Short-form video editing for ads, reels, and promotional content.</p>
-</div>
-</div>
-
-<div class="col-md-3 mb-4">
-<div class="card">
-<h5>WordPress</h5>
-<p>Business websites, blogs, and scalable content management systems.</p>
-</div>
-</div>
-
-<div class="col-md-3 mb-4">
-<div class="card">
-<h5>Elementor</h5>
-<p>High-converting landing pages and drag-and-drop web design builds.</p>
-</div>
-</div>
-
-<div class="col-md-3 mb-4">
-<div class="card">
-<h5>Microsoft Word</h5>
-<p>Professional document creation, proposals, reports, and business documentation.</p>
-</div>
-</div>
-<div class="col-md-3 mb-4">
-<div class="card">
-<h5>AI Tools & Automation</h5>
-<p>
-Use of AI tools for content creation, workflow automation, chatbot setup, and productivity systems for businesses.
-</p>
-</div>
-</div>
-
-<div class="col-md-3 mb-4">
-<div class="card">
-<h5>Microsoft Excel</h5>
-<p>Data analysis, reporting, dashboards, and business tracking systems.</p>
-</div>
-</div>
-
-<div class="col-md-3 mb-4">
-<div class="card">
-<h5>Google Sheets</h5>
-<p>Cloud-based spreadsheets, automation tracking, and collaborative business workflows.</p>
-</div>
-</div>
-</div>
-
-</div>
-</section>
-
-<!-- SERVICES -->
-<section id="services">
-<div class="container">
-
-<h2>What I Deliver</h2>
-<p class="sub">Business-focused solutions, not just design</p>
-
-<div class="row">
-
-<div class="col-md-4 mb-4">
-<div class="card">
-<h5>Web Development</h5>
-<p>Modern, fast, mobile-first websites built for conversion.</p>
-</div>
-</div>
-
-<div class="col-md-4 mb-4">
-<div class="card">
-<h5>IT Infrastructure</h5>
-<p>Networks, servers, firewall, system optimization.</p>
-</div>
-</div>
-
-<div class="col-md-4 mb-4">
-<div class="card">
-<h5>Business Systems</h5>
-<p>Booking systems, automation, CRM integration.</p>
-</div>
-</div>
-
-</div>
-</div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing">
-<div class="container">
-
-<h2>Investment Packages</h2>
-<p class="sub">Simple pricing for serious clients only</p>
-
-<div class="row">
-
-<!-- STARTER -->
-<div class="col-md-4 mb-4">
-<div class="card text-center">
-<h5>Starter Website</h5>
-<p class="price">$150</p>
-<p>1 Page Landing Page</p>
-<p>Mobile Optimized</p>
-<p>Contact Form</p>
-<p>Basic UI Design</p>
-</div>
-</div>
-
-<!-- BUSINESS -->
-<div class="col-md-4 mb-4">
-<div class="card text-center" style="border:1px solid #3b82f6;">
-<h5>Business Growth</h5>
-<p class="price">$500 – $1,000</p>
-<p>Multi-page Website</p>
-<p>WordPress / Elementor</p>
-<p>SEO Ready</p>
-<p>Lead System</p>
-</div>
-</div>
-
-<!-- PREMIUM -->
-<div class="col-md-4 mb-4">
-<div class="card text-center">
-<h5>Full System Build</h5>
-<p class="price">$2,000+</p>
-<p>Website + Automation</p>
-<p>CRM Integration</p>
-<p>Business Optimization</p>
-<p>Ongoing Support</p>
-</div>
-</div>
-
-</div>
-
-</div>
-</section>
-
-<section id="portfolio" class="section-dark">
-
-<div class="container">
-
-<h2 class="fade-up">Website Development Portfolio</h2>
-
-<p class="section-subtitle fade-up">
-Selected high-conversion websites designed and developed for coaching, wellness, and personal brand businesses.
-</p>
-
-<div class="row justify-content-center">
-
-<!-- PROJECT 1 -->
-<div class="col-md-4 mb-4 fade-up">
-  <div class="card h-100">
-
-    <img src="img/webs2.png" class="card-img-top" alt="Esperanza Coaching">
-
-    <div class="card-body text-center">
-
-      <h5>Esperanza Coaching Collective</h5>
-
-      <p>
-        High-conversion coaching website built to support emotional healing services, client trust, and booking conversion flow.
-      </p>
-
-      <a href="https://esperanzacoachingcollective.com/" target="_blank" class="btn btn-primary">
-        View Live Site
-      </a>
-
-    </div>
-  </div>
-</div>
-
-<!-- PROJECT 2 -->
-<div class="col-md-4 mb-4 fade-up">
-  <div class="card h-100">
-
-    <img src="img/marga2.png" class="card-img-top" alt="MG Transformation">
-
-    <div class="card-body text-center">
-
-      <h5>MG Transformation</h5>
-
-      <p>
-        Personal brand authority website designed for identity transformation coaching and premium positioning.
-      </p>
-
-      <a href="https://margaritagrigoryan.com/" target="_blank" class="btn btn-primary">
-        View Live Site
-      </a>
-
-    </div>
-  </div>
-</div>
-
-<!-- PROJECT 3 -->
-<div class="col-md-4 mb-4 fade-up">
-  <div class="card h-100">
-
-    <img src="img/site6.png" class="card-img-top" alt="Wellness Website">
-
-    <div class="card-body text-center">
-
-      <h5>Wellness Consultation Platform</h5>
-
-      <p>
-        Professional wellness website designed for therapy services, consultation booking, and client onboarding.
-      </p>
-
-      <a href="https://mariitacuervo.com/" target="_blank" class="btn btn-primary">
-        View Live Site
-      </a>
-
-    </div>
-  </div>
-</div>
-    <!-- PROJECT 4 -->
-<div class="col-md-4 mb-4 fade-up">
-  <div class="card h-100">
-
-    <img src="img/web3.png" class="card-img-top" alt="E-commerce Store">
-
-    <div class="card-body text-center">
-
-      <h5>E-commerce Product Store</h5>
-
-      <p>
-        Conversion-focused online store designed to showcase products, build trust, and drive consistent sales.
-      </p>
-
-      <a href="https://jay-rtl.github.io/sample/" target="_blank" class="btn btn-primary">
-        View Live Site
-      </a>
-
-    </div>
-  </div>
-</div>
-
-<!-- PROJECT 5 -->
-<div class="col-md-4 mb-4 fade-up">
-  <div class="card h-100">
-
-    <img src="img/web4.png" class="card-img-top" alt="Service Business Website">
-
-    <div class="card-body text-center">
-
-      <h5>Service Business Website</h5>
-
-      <p>
-        Clean and modern website built for service-based businesses to generate leads and increase client inquiries.
-      </p>
-
-      <a href="https://jay-rtl.github.io/captiveportal/" target="_blank" class="btn btn-primary">
-        View Live Site
-      </a>
-
-    </div>
-  </div>
-</div>
-
-    <!-- PROJECT 6 -->
-<div class="col-md-4 mb-4 fade-up">
-  <div class="card h-100">
-
-    <img src="img/web5.png" class="card-img-top" alt="Service Business Website">
-
-    <div class="card-body text-center">
-
-      <h5>Catering Business Website</h5>
-
-      <p>
-        Clean and modern website built for service-based businesses to generate leads and increase client inquiries.
-      </p>
-
-      <a href="https://jay-rtl.github.io/francisjayrotol-portfolio.github.io/" target="_blank" class="btn btn-primary">
-        View Live Site
-      </a>
-
-    </div>
-  </div>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<section id="Testimonials" class="section-dark">
-  <div class="container text-center">
-
-    <h2 class="fade-up">Client Testimonials</h2>
-
-    <p class="section-subtitle fade-up">
-      Feedback from clients who trusted me to build their websites and digital systems.
-    </p>
-
-    <div class="row justify-content-center">
-
-      <!-- FEATURED TESTIMONIAL -->
-      <div class="col-lg-8 mb-4 fade-up">
-        <div class="testimonial-card featured p-5 text-left">
-
-          <p class="mb-3">
-            “I just have to say this directly… I’m honestly impressed.
-            You didn’t just build a website—you understood my brand on a deeper level.”
-          </p>
-
-          <p class="mb-3">
-            “The structure, the design, the flow… everything feels intentional and aligned with my coaching business.”
-          </p>
-
-          <p class="mb-3">
-            “It’s not just a website—it elevated how I present myself to clients.”
-          </p>
-
-          <p class="mb-4">
-            “This was a real upgrade to my business, not just a design project.”
-          </p>
-
-          <h5 class="mb-0">— Margarita Grigoryan</h5>
-          <small>Founder, MG Transformation</small>
-
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" id="home">
+    <div class="container hero-grid">
+      <div class="hero-content fade-up">
+        <div class="eyebrow"><i class="fa-solid fa-bolt"></i> Premium Web Design & IT Systems</div>
+        <h1>Websites that look premium and <span class="gradient-text">convert clients.</span></h1>
+        <p>
+          I help business owners build clean, fast, and trustworthy websites with reliable digital systems that support leads, bookings, and business growth.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">Book a Consultation <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#portfolio" class="btn btn-outline">View My Work</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-box">
+            <h3>6+</h3>
+            <p>Website projects showcased</p>
+          </div>
+          <div class="stat-box">
+            <h3>100%</h3>
+            <p>Mobile responsive layouts</p>
+          </div>
+          <div class="stat-box">
+            <h3>IT</h3>
+            <p>Web design plus system support</p>
+          </div>
         </div>
       </div>
 
-      <!-- TESTIMONIAL 2 -->
-      <div class="col-md-4 mb-4 fade-up">
-        <div class="testimonial-card p-4">
-
-          <p>
-            “Very smooth experience. Communication was clear, and the website came out professional and clean.”
-          </p>
-
-          <h6 class="mt-3 mb-0">— Coaching Client (USA)</h6>
-          <small>Business Owner</small>
-
+      <div class="hero-card fade-up">
+        <div class="browser-bar">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="preview-box">
+          <div class="preview-top">
+            <span>LIVE WEBSITE PREVIEW</span>
+            <h3>Clean design. Strong positioning. Better trust.</h3>
+          </div>
+          <div class="preview-bottom">
+            <div class="mini-line"></div>
+            <div class="mini-line"></div>
+            <div class="mini-line"></div>
+          </div>
         </div>
       </div>
-
-      <!-- TESTIMONIAL 3 -->
-      <div class="col-md-4 mb-4 fade-up">
-        <div class="testimonial-card p-4">
-
-          <p>
-            “Francis delivered beyond expectations. He turned my ideas into a structured, high-quality website that reflects my brand identity perfectly.”
-          </p>
-
-          <h6 class="mt-3 mb-0">— Michelle Savage</h6>
-          <small>Owner, Esperanza Coaching Collective</small>
-
-        </div>
-      </div>
-
-      <!-- OPTIONAL 4TH (SOCIAL PROOF STYLE) -->
-      <div class="col-md-4 mb-4 fade-up">
-        <div class="testimonial-card p-4">
-
-          <p>
-            “Professional, fast, and very easy to work with. The output looked like a premium agency build.”
-          </p>
-
-          <h6 class="mt-3 mb-0">— Client Feedback</h6>
-          <small>Service-Based Business</small>
-
-        </div>
-      </div>
-
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- CTA -->
-<section id="contact" class="cta">
-<div class="container">
+  <!-- TOOLS -->
+  <section class="section" id="tools">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="eyebrow"><i class="fa-solid fa-layer-group"></i> Tools & Platforms</div>
+        <h2>Tools I use to build polished digital experiences</h2>
+        <p>From websites and content visuals to business documents, spreadsheets, and automation support.</p>
+      </div>
 
-<h2>Let’s Build Your System</h2>
-<p class="sub">
-Serious businesses only. Let’s create something that actually generates results.
-</p>
+      <div class="grid-4">
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-solid fa-pen-nib"></i></div>
+          <h3>Canva</h3>
+          <p>Brand visuals, marketing graphics, social posts, and simple design assets.</p>
+        </div>
 
-<a href="mailto:rotoljay03@gmail.com" class="btn btn-primary m-2">Email Me</a>
-<a href="tel:+639615939457" class="btn btn-outline m-2">Call Now</a>
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-solid fa-video"></i></div>
+          <h3>CapCut</h3>
+          <p>Short-form video edits for reels, ads, promotions, and online content.</p>
+        </div>
 
-</div>
-</section>
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-brands fa-wordpress"></i></div>
+          <h3>WordPress</h3>
+          <p>Business websites, blogs, landing pages, and scalable content systems.</p>
+        </div>
 
-<footer>
-© 2026 Jay Rotol — Premium Web & IT Systems
-</footer>
-<script>
-document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <h3>Elementor</h3>
+          <p>Clean page layouts, landing pages, and easy-to-manage website builds.</p>
+        </div>
 
-    const target = document.querySelector(this.getAttribute('href'));
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-solid fa-file-word"></i></div>
+          <h3>Microsoft Word</h3>
+          <p>Professional documents, proposals, reports, and organized business files.</p>
+        </div>
 
-    if (target) {
-      window.scrollTo({
-        top: target.offsetTop - 70,
-        behavior: "smooth"
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-solid fa-robot"></i></div>
+          <h3>AI Tools</h3>
+          <p>Content support, workflow ideas, automation setup, and productivity systems.</p>
+        </div>
+
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-solid fa-table"></i></div>
+          <h3>Microsoft Excel</h3>
+          <p>Reports, dashboards, business tracking, and structured data organization.</p>
+        </div>
+
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-brands fa-google"></i></div>
+          <h3>Google Sheets</h3>
+          <p>Cloud tracking sheets, collaboration workflows, and simple automation support.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="eyebrow"><i class="fa-solid fa-briefcase"></i> What I Deliver</div>
+        <h2>Not just a website — a better online presence</h2>
+        <p>I focus on clean design, clear messaging, and practical systems that make it easier for customers to trust and contact your business.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-solid fa-code"></i></div>
+          <h3>Website Development</h3>
+          <p>Modern, mobile-first websites designed to look professional, build credibility, and increase inquiries.</p>
+        </div>
+
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-solid fa-network-wired"></i></div>
+          <h3>IT Infrastructure</h3>
+          <p>Support for networks, systems, troubleshooting, optimization, and reliable business operations.</p>
+        </div>
+
+        <div class="card fade-up">
+          <div class="icon"><i class="fa-solid fa-gears"></i></div>
+          <h3>Business Systems</h3>
+          <p>Booking flows, contact forms, basic automation, CRM setup, and simple digital workflows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="eyebrow"><i class="fa-solid fa-tag"></i> Investment Packages</div>
+        <h2>Simple packages for businesses ready to look professional</h2>
+        <p>Flexible options depending on how much presence, structure, and functionality your business needs.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card pricing-card fade-up">
+          <span class="badge">Starter</span>
+          <h3>Starter Website</h3>
+          <div class="price">$150</div>
+          <p>Best for new businesses that need one clean page to introduce their offer and collect inquiries.</p>
+          <ul class="feature-list">
+            <li><i class="fa-solid fa-check"></i> 1-page landing page</li>
+            <li><i class="fa-solid fa-check"></i> Mobile responsive design</li>
+            <li><i class="fa-solid fa-check"></i> Contact section</li>
+            <li><i class="fa-solid fa-check"></i> Basic UI design</li>
+          </ul>
+        </div>
+
+        <div class="card pricing-card featured fade-up">
+          <span class="badge">Most Popular</span>
+          <h3>Business Growth</h3>
+          <div class="price">$500–$1,000</div>
+          <p>For service-based businesses that want stronger credibility, more pages, and a better client journey.</p>
+          <ul class="feature-list">
+            <li><i class="fa-solid fa-check"></i> Multi-page website</li>
+            <li><i class="fa-solid fa-check"></i> WordPress / Elementor build</li>
+            <li><i class="fa-solid fa-check"></i> SEO-ready structure</li>
+            <li><i class="fa-solid fa-check"></i> Lead-focused sections</li>
+          </ul>
+        </div>
+
+        <div class="card pricing-card fade-up">
+          <span class="badge">Premium</span>
+          <h3>Full System Build</h3>
+          <div class="price">$2,000+</div>
+          <p>For businesses that need a complete website, automation, system setup, and ongoing technical support.</p>
+          <ul class="feature-list">
+            <li><i class="fa-solid fa-check"></i> Website + automation</li>
+            <li><i class="fa-solid fa-check"></i> CRM integration</li>
+            <li><i class="fa-solid fa-check"></i> Business optimization</li>
+            <li><i class="fa-solid fa-check"></i> Ongoing support options</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section class="section" id="portfolio">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="eyebrow"><i class="fa-solid fa-desktop"></i> Portfolio</div>
+        <h2>Selected website projects</h2>
+        <p>Websites designed for coaching, wellness, e-commerce, service-based businesses, and personal brands.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card portfolio-card fade-up">
+          <div class="portfolio-img"><img src="img/webs2.png" alt="Esperanza Coaching Collective"></div>
+          <div class="portfolio-content">
+            <h3>Esperanza Coaching Collective</h3>
+            <p>A coaching website built to support emotional healing services, trust-building, and booking flow.</p>
+            <a href="https://esperanzacoachingcollective.com/" target="_blank" class="project-link">View Live Site <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+
+        <div class="card portfolio-card fade-up">
+          <div class="portfolio-img"><img src="img/marga2.png" alt="MG Transformation"></div>
+          <div class="portfolio-content">
+            <h3>MG Transformation</h3>
+            <p>A premium personal brand website for identity transformation coaching and professional positioning.</p>
+            <a href="https://margaritagrigoryan.com/" target="_blank" class="project-link">View Live Site <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+
+        <div class="card portfolio-card fade-up">
+          <div class="portfolio-img"><img src="img/site6.png" alt="Wellness Consultation Platform"></div>
+          <div class="portfolio-content">
+            <h3>Wellness Consultation Platform</h3>
+            <p>A professional wellness website designed for consultation booking and client onboarding.</p>
+            <a href="https://mariitacuervo.com/" target="_blank" class="project-link">View Live Site <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+
+        <div class="card portfolio-card fade-up">
+          <div class="portfolio-img"><img src="img/web3.png" alt="E-commerce Product Store"></div>
+          <div class="portfolio-content">
+            <h3>E-commerce Product Store</h3>
+            <p>A conversion-focused online store designed to showcase products and encourage sales.</p>
+            <a href="https://jay-rtl.github.io/sample/" target="_blank" class="project-link">View Live Site <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+
+        <div class="card portfolio-card fade-up">
+          <div class="portfolio-img"><img src="img/web4.png" alt="Service Business Website"></div>
+          <div class="portfolio-content">
+            <h3>Service Business Website</h3>
+            <p>A clean and modern website built for service-based businesses to increase client inquiries.</p>
+            <a href="https://jay-rtl.github.io/captiveportal/" target="_blank" class="project-link">View Live Site <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+
+        <div class="card portfolio-card fade-up">
+          <div class="portfolio-img"><img src="img/web5.png" alt="Catering Business Website"></div>
+          <div class="portfolio-content">
+            <h3>Catering Business Website</h3>
+            <p>A polished service website designed to present offerings clearly and generate more inquiries.</p>
+            <a href="https://jay-rtl.github.io/francisjayrotol-portfolio.github.io/" target="_blank" class="project-link">View Live Site <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section" id="testimonials">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="eyebrow"><i class="fa-solid fa-star"></i> Client Feedback</div>
+        <h2>Real words from people who trusted the process</h2>
+        <p>Feedback from clients who worked with me on their websites and digital presence.</p>
+      </div>
+
+      <div class="card testimonial-featured fade-up">
+        <p class="quote">
+          “I’m honestly impressed. You didn’t just build a website — you understood my brand on a deeper level. The structure, the design, the flow, everything feels intentional and aligned with my coaching business.”
+        </p>
+        <div class="client-name">Margarita Grigoryan</div>
+        <div class="client-role">Founder, MG Transformation</div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card fade-up">
+          <p>“Very smooth experience. Communication was clear, and the website came out professional and clean.”</p>
+          <br>
+          <div class="client-name">Coaching Client</div>
+          <div class="client-role">Business Owner, USA</div>
+        </div>
+
+        <div class="card fade-up">
+          <p>“Francis delivered beyond expectations. He turned my ideas into a structured, high-quality website that reflects my brand identity perfectly.”</p>
+          <br>
+          <div class="client-name">Michelle Savage</div>
+          <div class="client-role">Owner, Esperanza Coaching Collective</div>
+        </div>
+
+        <div class="card fade-up">
+          <p>“Professional, fast, and very easy to work with. The output looked like a premium agency build.”</p>
+          <br>
+          <div class="client-name">Client Feedback</div>
+          <div class="client-role">Service-Based Business</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="contact-box fade-up">
+        <div class="eyebrow"><i class="fa-solid fa-paper-plane"></i> Let’s Work Together</div>
+        <h2>Ready to build your premium online presence?</h2>
+        <p>
+          Whether you need a clean one-page website, a full business website, or support with your digital systems, I can help you build something professional and client-ready.
+        </p>
+
+        <div class="contact-actions">
+          <a href="mailto:rotoljay03@gmail.com" class="btn btn-primary">Email Me <i class="fa-solid fa-envelope"></i></a>
+          <a href="tel:+639615939457" class="btn btn-outline">Call Now <i class="fa-solid fa-phone"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Jay Rotol — Premium Web Design & IT Systems. Built with care from the Philippines.
+  </footer>
+
+  <script>
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
       });
-    }
-  });
-});
-</script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
 </body>
 </html>
