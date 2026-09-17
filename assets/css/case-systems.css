@@ -1,1 +1,52 @@
-.system-project{border-color:rgba(70,195,231,.34)}.system-project .project-shot{background:linear-gradient(145deg,#123958,#081522)}.system-project .project-shot:after{content:"SYSTEM CASE STUDY"}.asset-note{margin:10px 0 0!important;color:#7f9eb3!important;font-size:.72rem!important;text-align:center}.asset-pending img{object-fit:contain!important}.workflow-block+.workflow-block{margin-top:32px}.workflow-block h3{margin:0 0 13px}.workflow{display:flex;align-items:center;gap:8px;overflow-x:auto;padding:22px;border:1px solid var(--line);border-radius:16px;background:rgba(8,20,34,.7)}.workflow span{flex:1;min-width:108px;padding:12px 10px;border:1px solid rgba(71,194,232,.25);border-radius:9px;background:#0d2033;color:#dff8ff;text-align:center;font-size:.68rem;font-weight:800}.workflow i{color:#67d9ef;font-style:normal}.case-screen img{aspect-ratio:auto;object-fit:contain}.case-hero>div>p:not(.lead){color:var(--muted)}@media(max-width:650px){.workflow{flex-direction:column;align-items:stretch;overflow:visible}.workflow span{min-width:0}.workflow i{transform:rotate(90deg);text-align:center}.system-project .project-shot:after{display:none}}
+.case-back { margin-bottom: 36px; color: var(--muted); font-size: 12px; }
+.case-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 40px; border-top: 1px solid var(--line); margin: 56px 0 0; padding-top: 28px; }
+.case-facts dt { color: var(--subtle); font-size: 10px; text-transform: uppercase; margin-bottom: 12px; }
+.case-facts dd { margin: 0; color: var(--text); font-size: 13px; max-width: 330px; }
+.case-image-section { padding: 0 0 56px; }
+.case-image { display: block; background: #242723; padding: 48px; border-radius: 4px; }
+.case-image .browser img { aspect-ratio: auto; width: 100%; object-fit: contain; }
+.case-image .browser-bar { height: 34px; }
+.case-image .browser-bar small { font-size: 10px; }
+.case-section { padding: 72px 0; }
+.case-section + .case-section:not(.band) { border-top: 1px solid var(--line); }
+.case-narrative { display: grid; grid-template-columns: 240px 1fr; gap: 80px; }
+.case-narrative > .eyebrow { padding-top: 10px; }
+.case-narrative h2 { font-size: 38px; max-width: 880px; margin-bottom: 28px; }
+.case-narrative p { max-width: 840px; color: var(--muted); font-size: 17px; margin: 0; }
+.case-features { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 40px; }
+.case-features article { border-top: 1px solid var(--line); padding-top: 24px; }
+.case-features article > span { color: var(--accent); display: block; margin-bottom: 20px; }
+.case-features h3 { font-size: 23px; }
+.case-features p { font-size: 14px; color: var(--muted); }
+.case-feature-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; list-style: none; padding: 0; }
+.case-feature-list li { padding: 20px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.workflow-block + .workflow-block { margin-top: 32px; }
+.workflow-block h3 { font-size: 20px; }
+.workflow { display: flex; flex-wrap: wrap; padding: 0; gap: 12px; list-style: none; }
+.workflow li { display: grid; gap: 18px; flex: 1 1 110px; min-height: 100px; padding: 16px; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; }
+.workflow li span { font-size: 10px; color: var(--accent); }
+.case-next { display: flex; justify-content: space-between; gap: 32px; align-items: center; padding-bottom: 56px; }
+.case-next > a { text-align: right; }
+@media (max-width:1100px) {
+  .case-narrative { grid-template-columns: 170px 1fr; gap: 48px; }
+  .case-features { grid-template-columns: 1fr 1fr; }
+  .case-image { padding: 32px; }
+}
+@media (max-width:800px) {
+  .case-narrative { grid-template-columns: 1fr; gap: 8px; }
+  .case-narrative h2 { font-size: 34px; }
+  .case-facts { gap: 24px; }
+}
+@media (max-width:560px) {
+  .case-facts { grid-template-columns: 1fr; gap: 24px; margin-top: 40px; }
+  .case-facts dt { margin-bottom: 6px; }
+  .case-image { padding: 14px; }
+  .case-image-section { padding-bottom: 16px; }
+  .case-section { padding: 48px 0; }
+  .case-narrative h2 { font-size: 29px; }
+  .case-narrative p { font-size: 15px; }
+  .case-features,.case-feature-list { grid-template-columns: 1fr; }
+  .case-feature-list li { font-size: 14px; }
+  .case-next { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .case-next > a { text-align: left; }
+}

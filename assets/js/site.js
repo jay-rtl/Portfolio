@@ -1,3 +1,125 @@
-﻿(()=>{const D=window.PORTFOLIO_DATA,B=new URL('../..',document.currentScript.src).href.replace(/\/$/,'');const path=location.pathname.toLowerCase();const nav=[['Home','/'],['Work','/work/'],['Services','/services/'],['Systems','/systems/'],['About','/about/'],['Pricing','/pricing/'],['Resume','/resume/'],['Contact','/contact/']];const href=p=>B+(p==='/'?'/':p);const active=p=>p==='/'?path.endsWith('/portfolio/')||path.endsWith('/portfolio/index.html'):path.includes(p);document.querySelector('[data-header]')?.replaceChildren();const header=document.querySelector('[data-header]');if(header)header.outerHTML=`<header class="site-header"><div class="wrap nav"><a class="brand" href="${href('/')}" aria-label="Jay Rotol home"><span class="brand-mark">JR</span><span class="brand-copy"><strong>Jay Rotol</strong><small><i></i> WEB · SYSTEMS · IT</small></span></a><button class="menu-button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span class="menu-lines" aria-hidden="true"><i></i><i></i></span></button><nav class="nav-links" id="main-nav" aria-label="Main navigation">${nav.map(([n,p])=>`<a href="${href(p)}"${active(p)?' aria-current="page"':''}><span>${n}</span></a>`).join('')}</nav><a class="button button-primary nav-cta" href="${href('/contact/')}"><span>Start a Project</span><b aria-hidden="true">↗</b></a></div></header>`;const footer=document.querySelector('[data-footer]');if(footer)footer.outerHTML=`<footer class="site-footer"><div class="wrap"><div class="footer-grid"><div><a class="brand" href="${href('/')}"><span class="brand-mark">JR</span>Jay Rotol</a><p class="lead">Web development, WordPress, practical business systems, and IT support from the Philippines.</p></div><div><h2 class="footer-title">Explore</h2><div class="footer-list"><a href="${href('/work/')}">Work</a><a href="${href('/systems/')}">Systems</a><a href="${href('/about/')}">About</a><a href="${href('/resume/')}">Resume</a></div></div><div><h2 class="footer-title">Services</h2><div class="footer-list"><a href="${href('/services/')}">Web development</a><a href="${href('/services/')}">WordPress</a><a href="${href('/services/')}">E-commerce</a><a href="${href('/services/')}">IT support</a></div></div><div><h2 class="footer-title">Contact</h2><div class="footer-list"><a href="mailto:rotoljay03@gmail.com">rotoljay03@gmail.com</a><a href="tel:+639615939457">+63 961 593 9457</a><span>Philippines</span><span>Remote projects & opportunities</span></div></div></div><div class="footer-bottom"><span>© <span data-year></span> Jay Rotol. All rights reserved.</span><span>Built for speed, accessibility, and maintainability.</span></div></div></footer>`;document.querySelectorAll('[data-year]').forEach(x=>x.textContent=new Date().getFullYear());const btn=document.querySelector('.menu-button'),links=document.querySelector('.nav-links');const close=()=>{links?.classList.remove('open');btn?.setAttribute('aria-expanded','false');btn?.setAttribute('aria-label','Open navigation');document.body.classList.remove('menu-open')};btn?.addEventListener('click',()=>{const open=!links.classList.contains('open');links.classList.toggle('open',open);btn.setAttribute('aria-expanded',String(open));btn.setAttribute('aria-label',open?'Close navigation':'Open navigation');document.body.classList.toggle('menu-open',open)});links?.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));addEventListener('keydown',e=>{if(e.key==='Escape')close()});addEventListener('scroll',()=>document.querySelector('.site-header')?.classList.toggle('scrolled',scrollY>8),{passive:true});const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce)document.querySelectorAll('.reveal').forEach(x=>x.classList.add('visible'));else{const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(x=>o.observe(x))}document.querySelectorAll('[data-projects]').forEach(grid=>{const featured=grid.dataset.projects==='featured'?D.projects.slice(0,4):D.projects;grid.innerHTML=featured.map(p=>`<article class="card project-card" data-filters="${p.filters.join(' ')}"><div class="project-shot"><div class="browser"><div class="browser-bar"></div><img src="${B}/${p.image}" alt="${p.imageAlt||`Screenshot of ${p.title}`}" loading="lazy"></div></div><div class="project-body"><div class="tags">${p.tech.map(t=>`<span class="tag">${t}</span>`).join('')}</div><h3>${p.title}</h3><p>${p.category}</p><p>${p.description}</p><div class="card-links"><a href="${href('/work/'+p.slug+'/')}">View Case Study →</a>${p.url?`<a href="${p.url}" target="_blank" rel="noopener">Live Website ↗</a>`:""}</div></div></article>`).join('')});document.querySelectorAll('.filter').forEach(f=>f.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));f.classList.add('active');const v=f.dataset.filter;document.querySelectorAll('[data-filters]').forEach(c=>c.hidden=v!=='all'&&!c.dataset.filters.split(' ').includes(v))}));const form=document.querySelector('#contact-form');form?.addEventListener('submit',e=>{e.preventDefault();const status=form.querySelector('.form-status');if(!form.checkValidity()){form.reportValidity();status.className='form-status is-error';status.textContent='Please complete the required fields.';return}if(form.elements.website.value)return;const data=new FormData(form);const subject=`Portfolio inquiry: ${data.get('projectType')} from ${data.get('name')}`;const body=`Hello Jay,\n\nI would like to discuss a project.\n\nName: ${data.get('name')}\nEmail: ${data.get('email')}\nBusiness / Company: ${data.get('company')||'Not provided'}\nProject Type: ${data.get('projectType')}\nEstimated Budget: ${data.get('budget')}\n\nProject Details:\n${data.get('details')}\n\nRegards,\n${data.get('name')}`;status.className='form-status is-success';status.textContent='Opening Gmail with your project details…';const gmail=`https://mail.google.com/mail/?view=cm&fs=1&to=rotoljay03@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;window.location.href=gmail});})();
+(() => {
+  const { href, icon, projectCard } = window.PORTFOLIO_UI;
+  const data = window.PORTFOLIO_DATA;
+  const home = document.body.hasAttribute('data-home');
+  const nav = home
+    ? [['Work', '#selected-work'], ['Expertise', '#expertise'], ['About', '#about'], ['Contact', '#contact']]
+    : [['Work', '/work/'], ['Expertise', '/services/'], ['Systems', '/systems/'], ['About', '/about/'], ['Contact', '/contact/']];
+  const navHref = path => path.startsWith('#') ? path : href(path);
+  const brand = '<span class="brand-wordmark">Jay Rotol<span class="brand-period">.</span></span>';
+  const header = document.querySelector('[data-header]');
+  if (header) {
+    header.outerHTML = '<header class="site-header"><div class="wrap nav">' +
+      '<a class="brand" href="' + href('/') + '" aria-label="Jay Rotol home">' + brand + '<small>Websites &amp; systems</small></a>' +
+      '<button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span class="menu-lines" aria-hidden="true"><i></i><i></i></span></button>' +
+      '<nav class="nav-links" id="main-nav" aria-label="Main navigation">' +
+      nav.map(([label, path]) => '<a href="' + navHref(path) + '"' +
+        (!home && location.pathname.includes(path) ? ' aria-current="page"' : '') + '>' + label + '</a>').join('') +
+      '<span class="availability nav-availability"><span class="dot"></span>Available for projects</span></nav></div></header>';
+  }
+  const footer = document.querySelector('[data-footer]');
+  if (footer) {
+    footer.outerHTML = '<footer class="site-footer"><div class="wrap"><div class="footer-grid">' +
+      '<div class="footer-intro"><a class="brand" href="' + href('/') + '">' + brand + '</a><p>Thoughtful websites. Practical systems.<br>Built around your business.</p><span class="availability"><span class="dot"></span>Philippines / Available worldwide</span></div>' +
+      '<div><h2 class="footer-title">Explore</h2><div class="footer-list">' +
+      [['Home', '/'], ['Work', '/work/'], ['About', '/about/'], ['Resume', '/resume/']].map(([label, path]) => '<a href="' + href(path) + '">' + label + '</a>').join('') + '</div></div>' +
+      '<div><h2 class="footer-title">Working together</h2><div class="footer-list">' +
+      [['Services', '/services/'], ['Business systems', '/systems/'], ['Pricing', '/pricing/'], ['Start a project', '/contact/']].map(([label, path]) => '<a href="' + href(path) + '">' + label + '</a>').join('') + '</div></div>' +
+      '<div><h2 class="footer-title">Say hello</h2><div class="footer-list"><a href="mailto:rotoljay03@gmail.com">rotoljay03@gmail.com</a><a href="tel:+639615939457">+63 961 593 9457</a><span>Remote projects &amp; opportunities</span></div></div></div>' +
+      '<div class="footer-bottom"><span>&copy; ' + new Date().getFullYear() + ' Jay Rotol</span><span>Development / Systems / IT</span><a class="text-link" href="#main">Back to top ' + icon('arrow-up-right') + '</a></div></div></footer>';
+  }
 
+  const menu = document.querySelector('.menu-button');
+  const links = document.querySelector('.nav-links');
+  const mobile = matchMedia('(max-width: 800px)');
+  const closeMenu = (restoreFocus = false) => {
+    links?.classList.remove('open');
+    menu?.setAttribute('aria-expanded', 'false');
+    menu?.setAttribute('aria-label', 'Open navigation');
+    document.body.classList.remove('menu-open');
+    if (restoreFocus) menu?.focus();
+  };
+  menu?.addEventListener('click', () => {
+    const open = menu.getAttribute('aria-expanded') !== 'true';
+    if (!open) return closeMenu(true);
+    links.classList.add('open');
+    menu.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-label', 'Close navigation');
+    document.body.classList.add('menu-open');
+    links.querySelector('a')?.focus();
+  });
+  links?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => closeMenu()));
+  mobile.addEventListener('change', () => closeMenu());
+  addEventListener('keydown', event => {
+    if (menu?.getAttribute('aria-expanded') !== 'true') return;
+    if (event.key === 'Escape') closeMenu(true);
+    if (event.key === 'Tab') {
+      const focusable = [menu, ...links.querySelectorAll('a')];
+      const first = focusable[0], last = focusable.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+  });
+  const stickyHeader = document.querySelector('.site-header');
+  let scrollQueued = false;
+  const updateHeader = () => {
+    stickyHeader?.classList.toggle('scrolled', scrollY > 32);
+    scrollQueued = false;
+  };
+  addEventListener('scroll', () => {
+    if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(updateHeader); }
+  }, { passive: true });
+  updateHeader();
 
+  document.querySelectorAll('[data-projects]').forEach(grid => {
+    const projects = grid.dataset.projects === 'featured' ? data.projects.slice(0,4) : data.projects;
+    grid.innerHTML = projects.map(projectCard).join('');
+  });
+  const filters = [...document.querySelectorAll('.filter')];
+  const projectGrid = document.querySelector('[data-projects="all"]');
+  if (projectGrid) {
+    const status = document.createElement('p');
+    status.className = 'filter-status';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    projectGrid.before(status);
+    const update = filter => {
+      filters.forEach(button => {
+        const active = button === filter;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+      let count = 0;
+      projectGrid.querySelectorAll('[data-filters]').forEach(card => {
+        card.hidden = filter.dataset.filter !== 'all' && !card.dataset.filters.split(' ').includes(filter.dataset.filter);
+        if (!card.hidden) count++;
+      });
+      status.textContent = count + ' ' + (count === 1 ? 'project' : 'projects');
+    };
+    filters.forEach(button => button.addEventListener('click', () => update(button)));
+    if (filters.length) update(filters[0]);
+  }
+
+  const form = document.querySelector('#contact-form');
+  form?.addEventListener('submit', event => {
+    event.preventDefault();
+    const status = form.querySelector('.form-status');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      status.className = 'form-status is-error';
+      status.textContent = 'Please complete the required fields.';
+      return;
+    }
+    if (form.elements.website.value) return;
+    const values = new FormData(form);
+    const subject = 'Portfolio inquiry: ' + values.get('projectType') + ' from ' + values.get('name');
+    const body = 'Hello Jay,\n\nI would like to discuss a project.\n\nName: ' + values.get('name') +
+      '\nEmail: ' + values.get('email') + '\nBusiness / Company: ' + (values.get('company') || 'Not provided') +
+      '\nProject Type: ' + values.get('projectType') + '\nEstimated Budget: ' + values.get('budget') +
+      '\n\nProject Details:\n' + values.get('details') + '\n\nRegards,\n' + values.get('name');
+    status.className = 'form-status is-success';
+    status.textContent = 'Opening Gmail with your project details...';
+    location.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=rotoljay03@gmail.com&su=' +
+      encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  });
+})();

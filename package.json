@@ -1,0 +1,12 @@
+{
+  "name": "jay-rotol-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static portfolio with local-only preview and validation tools.",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "lint": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
