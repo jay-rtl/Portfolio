@@ -4,7 +4,7 @@
 .hero-topline .eyebrow { margin: 0; color: var(--muted); font-size: 10px; }
 .hero-location { color: var(--muted); font-size: 10px; }
 .hero-location > span { margin-left: 30px; color: var(--accent); }
-.hero h1 { font-size: 112px; line-height: 1; font-weight: 500; margin: 0 0 26px; }
+.hero h1 { font-size: 112px; line-height: 1; font-weight: 500; margin: 0 0 26px; text-wrap: balance; overflow-wrap: break-word; }
 .hero-statement { margin-bottom: 28px; font-size: 64px; line-height: 1.12; font-weight: 400; }
 .outlined { color: var(--accent); }
 .hero-bottom { display: flex; justify-content: space-between; gap: 64px; padding-bottom: 32px; }

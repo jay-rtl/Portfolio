@@ -6,11 +6,11 @@
     ? [['Work', '#selected-work'], ['Expertise', '#expertise'], ['About', '#about'], ['Contact', '#contact']]
     : [['Work', '/work/'], ['Expertise', '/services/'], ['Systems', '/systems/'], ['About', '/about/'], ['Contact', '/contact/']];
   const navHref = path => path.startsWith('#') ? path : href(path);
-  const brand = '<span class="brand-wordmark">Jay Rotol<span class="brand-period">.</span></span>';
+  const brand = '<span class="brand-wordmark">Francis Jay D. Rotol<span class="brand-period">.</span></span>';
   const header = document.querySelector('[data-header]');
   if (header) {
     header.outerHTML = '<header class="site-header"><div class="wrap nav">' +
-      '<a class="brand" href="' + href('/') + '" aria-label="Jay Rotol home">' + brand + '<small>Websites &amp; systems</small></a>' +
+      '<a class="brand" href="' + href('/') + '" aria-label="Francis Jay D. Rotol home">' + brand + '<small>Websites &amp; systems</small></a>' +
       '<button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span class="menu-lines" aria-hidden="true"><i></i><i></i></span></button>' +
       '<nav class="nav-links" id="main-nav" aria-label="Main navigation">' +
       nav.map(([label, path]) => '<a href="' + navHref(path) + '"' +
@@ -26,7 +26,7 @@
       '<div><h2 class="footer-title">Working together</h2><div class="footer-list">' +
       [['Services', '/services/'], ['Business systems', '/systems/'], ['Pricing', '/pricing/'], ['Start a project', '/contact/']].map(([label, path]) => '<a href="' + href(path) + '">' + label + '</a>').join('') + '</div></div>' +
       '<div><h2 class="footer-title">Say hello</h2><div class="footer-list"><a href="mailto:rotoljay03@gmail.com">rotoljay03@gmail.com</a><a href="tel:+639615939457">+63 961 593 9457</a><span>Remote projects &amp; opportunities</span></div></div></div>' +
-      '<div class="footer-bottom"><span>&copy; ' + new Date().getFullYear() + ' Jay Rotol</span><span>Development / Systems / IT</span><a class="text-link" href="#main">Back to top ' + icon('arrow-up-right') + '</a></div></div></footer>';
+      '<div class="footer-bottom"><span>&copy; ' + new Date().getFullYear() + ' Francis Jay D. Rotol</span><span>Development / Systems / IT</span><a class="text-link" href="#main">Back to top ' + icon('arrow-up-right') + '</a></div></div></footer>';
   }
 
   const menu = document.querySelector('.menu-button');
