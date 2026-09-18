@@ -48,3 +48,16 @@ test('shared motion owns the cursor, including the printable resume screen', () 
   const home = readFileSync(path.join(root,'index.html'),'utf8');
   assert.doesNotMatch(home,/class="custom-cursor"/);
 });
+
+test('branded sharing image and main-page preview metadata are complete', () => {
+  const png = readFileSync(path.join(root,'img/portfolio-social-preview.png'));
+  assert.equal(png.readUInt32BE(16),1200);
+  assert.equal(png.readUInt32BE(20),630);
+  for (const file of ['index.html','about/index.html','contact/index.html','pricing/index.html','resume/index.html','services/index.html','systems/index.html','work/index.html','resume.html']) {
+    const html = readFileSync(path.join(root,file),'utf8');
+    assert.equal((html.match(/property="og:image"/g) || []).length,1,file);
+    assert.match(html,/property="og:image" content="https:\/\/jay-rtl\.github\.io\/Portfolio\/img\/portfolio-social-preview\.png"/);
+    assert.match(html,/property="og:image:alt"/);
+    assert.match(html,/name="twitter:card" content="summary_large_image"/);
+  }
+});
