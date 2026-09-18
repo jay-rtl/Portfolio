@@ -2,17 +2,31 @@
   const { escape, href, icon } = window.PORTFOLIO_UI;
   const data = window.PORTFOLIO_DATA;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  reduced.addEventListener('change', () => {
+    if (reduced.matches) document.getAnimations().forEach(animation => animation.cancel());
+  });
+  const animateDetail = element => {
+    element.getAnimations().forEach(animation => animation.cancel());
+    if (!reduced.matches) element.animate(
+      [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'translateY(0)' }],
+      { duration: 520, easing: 'cubic-bezier(.22,1,.36,1)' }
+    );
+  };
   const intro = document.querySelector('[data-intro]');
+  const finishIntro = () => {
+    intro.remove();
+    document.querySelector('.hero').classList.add('is-ready');
+  };
   let seen = false;
   try { seen = sessionStorage.getItem('jay-intro-v3') === 'seen'; sessionStorage.setItem('jay-intro-v3', 'seen'); } catch { /* Storage can be unavailable in private contexts. */ }
   const replayIntro = new URL(location.href).searchParams.get('intro') === '1';
   if ((!seen || replayIntro) && !reduced.matches) {
     intro.classList.add('is-playing');
     intro.addEventListener('animationend', event => {
-      if (event.animationName === 'intro-exit') intro.remove();
+      if (event.animationName === 'intro-exit') finishIntro();
     });
-    setTimeout(() => intro.remove(), 4100);
-  } else intro.remove();
+    setTimeout(finishIntro, 4100);
+  } else finishIntro();
 
   const expertise = document.querySelector('[data-expertise]');
   const detail = (item, index) =>
@@ -35,7 +49,15 @@
       document.getElementById('expertise-panel-' + i).hidden = !open;
       trigger.setAttribute('aria-controls', desktop.matches ? 'expertise-preview' : 'expertise-panel-' + i);
     });
-    expertise.querySelector('.expertise-preview').innerHTML = detail(data.expertise[index],index);
+    const preview = expertise.querySelector('.expertise-preview');
+    if (preview.dataset.active !== String(index)) {
+      preview.innerHTML = detail(data.expertise[index],index);
+      if (preview.dataset.active !== undefined) animateDetail(preview);
+      preview.dataset.active = String(index);
+    }
+    if (!desktop.matches && !document.getElementById('expertise-panel-' + index).hidden) {
+      animateDetail(document.getElementById('expertise-panel-' + index));
+    }
   };
   expertise.querySelector('.expertise-preview').id = 'expertise-preview';
   triggers.forEach((trigger,index) => {
@@ -57,6 +79,7 @@
     '" aria-controls="workflow-detail"><span>0' + (index + 1) + '</span><strong>' + escape(item.title) + '</strong></button>').join('');
   const stages = [...tabs.children];
   const selectStage = index => {
+    if (panel.dataset.active === String(index)) return;
     stages.forEach((stage,i) => {
       stage.setAttribute('aria-selected', String(i === index));
       stage.tabIndex = i === index ? 0 : -1;
@@ -64,6 +87,8 @@
     panel.setAttribute('aria-labelledby', 'workflow-tab-' + index);
     const item = data.workflow[index];
     panel.innerHTML = '<div><span class="eyebrow">0' + (index + 1) + ' / ' + escape(item.title) + '</span><h3>' + escape(item.headline) + '</h3></div><p>' + escape(item.text) + '</p>';
+    if (panel.dataset.active !== undefined) animateDetail(panel);
+    panel.dataset.active = String(index);
   };
   stages.forEach((stage,index) => {
     stage.addEventListener('click', () => selectStage(index));
@@ -80,67 +105,4 @@
   document.querySelector('[data-stack]').innerHTML = data.stack.map(item =>
     '<article><h3>' + escape(item.title) + '</h3><div class="stack-tools">' + item.tools.map(tool => '<span>' + escape(tool) + '</span>').join('') + '</div></article>').join('');
 
-  const cursor = document.querySelector('[data-cursor]');
-  const fine = matchMedia('(min-width: 801px) and (hover: hover) and (pointer: fine)');
-  let cursorFrame = 0;
-  addEventListener('pointermove', event => {
-    if (!fine.matches || reduced.matches || event.pointerType !== 'mouse') return;
-    if (cursorFrame) cancelAnimationFrame(cursorFrame);
-    cursorFrame = requestAnimationFrame(() => {
-      cursor.classList.add('is-on');
-      cursor.style.transform = 'translate(' + event.clientX + 'px,' + event.clientY + 'px)';
-    });
-  }, { passive: true });
-  document.addEventListener('pointerover', event => {
-    if (!fine.matches || reduced.matches || event.pointerType !== 'mouse') return;
-    const target = event.target.closest('a, button');
-    cursor.classList.toggle('is-expanded', !!target);
-    cursor.innerHTML = target?.dataset.cursorLabel ? escape(target.dataset.cursorLabel) : target?.target === '_blank' ? icon() : '';
-  });
-  document.addEventListener('pointerleave', () => cursor.classList.remove('is-on'));
-  const disableCursor = () => { if (!fine.matches || reduced.matches) cursor.classList.remove('is-on'); };
-  fine.addEventListener('change', disableCursor);
-  reduced.addEventListener('change', disableCursor);
-
-  const canvas = document.querySelector('[data-hero-map]');
-  const context = canvas.getContext('2d');
-  if (!context) return;
-  let width = 0, height = 0, offset = 0, frame = 0;
-  // Architectural lines hint at connected workflows; redraw only on interaction.
-  const draw = () => {
-    frame = 0;
-    context.clearRect(0,0,width,height);
-    if (width < 700) return;
-    const x = width * .8 + offset;
-    const top = height * .11;
-    context.strokeStyle = '#353a3344';
-    context.lineWidth = 1;
-    for (let i = 0; i < 4; i++) {
-      context.beginPath();
-      context.moveTo(x + i * 44, top);
-      context.lineTo(x + i * 44, height * .53);
-      context.lineTo(width * .52 + i * 44, height * .53);
-      context.lineTo(width * .52 + i * 44, height * .85);
-      context.stroke();
-    }
-    context.fillStyle = '#c0daa26b';
-    context.fillRect(x - 2, top - 2, 4, 4);
-    context.fillRect(width * .52 + 130, height * .85 - 2, 4, 4);
-  };
-  const resize = () => {
-    const rect = canvas.getBoundingClientRect();
-    width = rect.width; height = rect.height;
-    const ratio = Math.min(devicePixelRatio || 1,2);
-    canvas.width = Math.round(width * ratio);
-    canvas.height = Math.round(height * ratio);
-    context.setTransform(ratio,0,0,ratio,0,0);
-    draw();
-  };
-  new ResizeObserver(resize).observe(canvas);
-  canvas.parentElement.addEventListener('pointermove', event => {
-    if (reduced.matches || !fine.matches || event.pointerType !== 'mouse') return;
-    offset = (event.clientX / innerWidth - .5) * 12;
-    if (!frame) frame = requestAnimationFrame(draw);
-  }, { passive: true });
-  reduced.addEventListener('change', () => { offset = 0; draw(); });
 })();

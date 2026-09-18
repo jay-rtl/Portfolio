@@ -95,6 +95,7 @@
         if (!card.hidden) count++;
       });
       status.textContent = count + ' ' + (count === 1 ? 'project' : 'projects');
+      projectGrid.dispatchEvent(new CustomEvent('portfolio:filter', { bubbles: true }));
     };
     filters.forEach(button => button.addEventListener('click', () => update(button)));
     if (filters.length) update(filters[0]);

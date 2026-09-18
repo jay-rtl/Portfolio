@@ -38,3 +38,13 @@ test('both client testimonials and the enquiry path are retained', () => {
   assert.match(site,/https:\/\/mail\.google\.com\/mail\//);
   assert.match(site,/form\.checkValidity\(\)/);
 });
+
+test('shared motion owns the cursor, including the printable resume screen', () => {
+  const motion = readFileSync(path.join(root,'assets/js/motion.js'),'utf8');
+  assert.match(motion,/document\.body\.append\(cursor\)/);
+  assert.match(motion,/prefers-reduced-motion: reduce/);
+  const resume = readFileSync(path.join(root,'resume.html'),'utf8');
+  assert.match(resume,/assets\/js\/motion\.js/);
+  const home = readFileSync(path.join(root,'index.html'),'utf8');
+  assert.doesNotMatch(home,/class="custom-cursor"/);
+});

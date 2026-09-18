@@ -98,7 +98,7 @@ section[id] { scroll-margin-top: 24px; }
 .project-shot { display: block; position: relative; padding: 40px; background: #242723; overflow: hidden; border-radius: 4px; }
 .project-preview-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; color: #c1c6bc; font-size: 10px; text-transform: uppercase; }
 .project-preview-label .icon-arrow { width: 24px; height: 24px; }
-.browser { border-radius: 5px; border: 1px solid #545b4f; overflow: hidden; background: #151715; box-shadow: 0 20px 35px #0003; }
+.browser { border-radius: 3px; border: 1px solid var(--line); overflow: hidden; background: var(--bg); }
 .browser-bar { height: 27px; display: flex; align-items: center; gap: 4px; padding: 0 10px; background: #20241e; }
 .browser-bar > span { width: 4px; height: 4px; border-radius: 50%; background: #777f6e; }
 .browser-bar small { margin: auto; padding-right: 20px; font-size: 8px; color: #aab2a1; }
