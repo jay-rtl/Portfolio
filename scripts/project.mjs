@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 export const root = fileURLToPath(new URL('../', import.meta.url));
 export const publicEntries = [
-  'index.html', 'resume.html', 'robots.txt', 'sitemap.xml',
+  'index.html', 'resume.html', 'robots.txt', 'sitemap.xml', 'CNAME',
   'google0a9270b39237aabe.html', 'assets', 'img', 'about',
   'contact', 'pricing', 'resume', 'services', 'systems', 'work'
 ];

@@ -56,8 +56,22 @@ test('branded sharing image and main-page preview metadata are complete', () => 
   for (const file of ['index.html','about/index.html','contact/index.html','pricing/index.html','resume/index.html','services/index.html','systems/index.html','work/index.html','resume.html']) {
     const html = readFileSync(path.join(root,file),'utf8');
     assert.equal((html.match(/property="og:image"/g) || []).length,1,file);
-    assert.match(html,/property="og:image" content="https:\/\/jay-rtl\.github\.io\/Portfolio\/img\/portfolio-social-preview\.png"/);
+    assert.match(html,/property="og:image" content="https:\/\/francisjaywork\.tech\/img\/portfolio-social-preview\.png"/);
     assert.match(html,/property="og:image:alt"/);
     assert.match(html,/name="twitter:card" content="summary_large_image"/);
+  }
+});
+
+test('custom domain, crawler files, and founder role stay consistent', () => {
+  const domain = 'https://francisjaywork.tech';
+  const robots = readFileSync(path.join(root,'robots.txt'),'utf8');
+  const sitemap = readFileSync(path.join(root,'sitemap.xml'),'utf8');
+  assert.match(robots,new RegExp('Sitemap: ' + domain.replaceAll('.','\\.') + '/sitemap\\.xml'));
+  assert(!sitemap.includes('jay-rtl.github.io'));
+  assert.equal((sitemap.match(/<loc>/g) || []).length,17);
+  assert.equal(readFileSync(path.join(root,'CNAME'),'utf8').trim(),'francisjaywork.tech');
+  for (const file of ['index.html','about/index.html','resume/index.html','resume.html']) {
+    const html = readFileSync(path.join(root,file),'utf8');
+    assert.match(html,/SuroyTabai/,file);
   }
 });
