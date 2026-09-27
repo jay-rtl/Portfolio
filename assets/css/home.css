@@ -66,19 +66,32 @@
 .about-disciplines { display: flex; align-items: center; gap: 20px; padding: 20px 0; margin: 24px 0; border-block: 1px solid var(--line); font-size: 20px; }
 .about-disciplines > span:nth-child(even) { color: var(--accent); font-size: 14px; }
 .resume-link { margin-left: 24px; }
-.testimonial-label { display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 11px; }
-.testimonial { margin: 0; }
-.testimonial-featured { padding: 28px 0 56px; }
-.quote-mark { display: block; color: var(--accent); font: 92px/.8 Georgia,serif; margin-bottom: 24px; }
-.testimonial-featured blockquote { max-width: 1040px; margin: 0 0 40px; font-size: 35px; line-height: 1.45; font-weight: 400; }
-.testimonial figcaption { display: flex; align-items: center; gap: 16px; }
-.testimonial figcaption > div { display: grid; gap: 3px; }
-.testimonial figcaption cite { font-size: 13px; font-style: normal; }
-.testimonial figcaption > div > span { color: var(--muted); font-size: 11px; }
-.testimonial figcaption > .text-link { margin-left: auto; }
+.testimonials-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
+.testimonial-card { display: flex; flex-direction: column; margin: 0; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); transition: border-color var(--motion-normal),background var(--motion-normal); }
+.testimonial-card:hover,.testimonial-card:focus-within { border-color: var(--accent); background: var(--surface2); }
+.testimonial-topline { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-bottom: 26px; }
+.testimonial-topline .small-label { max-width: 180px; font-size: 9px; line-height: 1.7; color: var(--muted); }
+.quote-mark { color: var(--accent); font: 56px/.8 Georgia,serif; }
+.testimonial-card blockquote { margin: 0 0 32px; font-size: 16px; line-height: 1.8; }
+.testimonial-card figcaption { display: flex; align-items: center; gap: 12px; margin-top: auto; padding-top: 24px; border-top: 1px solid var(--line); }
+.testimonial-card figcaption > div { display: grid; gap: 5px; min-width: 0; }
+.testimonial-card cite { font-size: 14px; font-style: normal; }
+.testimonial-card figcaption > div > span { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.testimonial-card figcaption a:hover { color: var(--accent); }
 .client-initial { display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 50%; color: var(--accent); font-size: 12px; }
-.testimonial-secondary { padding-top: 40px; border-top: 1px solid var(--line); }
-.testimonial-secondary blockquote { max-width: 1000px; margin: 0 0 28px; font-size: 18px; color: var(--muted); line-height: 1.85; }
+.testimonial-project { align-self: flex-start; margin-top: 22px; }
+@media (min-width:801px) and (max-width:1100px) {
+  .testimonials-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .testimonial-card:last-child { grid-column: 1 / -1; }
+}
+@media (max-width:800px) {
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .testimonial-card { padding: 28px; }
+}
+@media (max-width:560px) {
+  .testimonial-card { padding: 24px; }
+  .testimonial-card blockquote { font-size: 15px; }
+}
 .closing-top { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 40px; }
 .closing-top .eyebrow { margin: 0; }
 .closing-section h2 { font-size: 96px; font-weight: 400; margin-bottom: 48px; line-height: 1.08; }
@@ -139,7 +152,6 @@
   .about-copy h2 { font-size: 32px; }
   .about-copy p { font-size: 14px; }
   .resume-link { margin-left: 0; display: flex; width: max-content; }
-  .testimonial-featured blockquote { font-size: 30px; }
   .closing-section h2 { font-size: 68px; }
   .closing-bottom { align-items: flex-start; flex-direction: column; gap: 24px; }
 }
@@ -183,13 +195,6 @@
   .about-photo img { width: min(100%,280px); }
   .about-copy p { font-size: 15px; }
   .about-disciplines { font-size: 18px; }
-  .testimonial-label > span:last-child { display: none; }
-  .testimonial-featured { padding: 12px 0 36px; }
-  .testimonial-featured blockquote { font-size: 25px; line-height: 1.5; margin-bottom: 28px; }
-  .quote-mark { font-size: 76px; }
-  .testimonial figcaption { flex-wrap: wrap; gap: 12px; }
-  .testimonial figcaption > .text-link { margin-left: 54px; width: 100%; }
-  .testimonial-secondary blockquote { font-size: 15px; }
   .closing-top { align-items: flex-start; flex-direction: column; gap: 16px; margin-bottom: 32px; }
   .closing-section h2 { font-size: 49px; margin-bottom: 32px; }
   .closing-bottom .actions { gap: 24px; }

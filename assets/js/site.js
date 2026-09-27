@@ -3,9 +3,15 @@
   const data = window.PORTFOLIO_DATA;
   const home = document.body.hasAttribute('data-home');
   const nav = home
-    ? [['Work', '#selected-work'], ['Expertise', '#expertise'], ['About', '#about'], ['Contact', '#contact']]
-    : [['Work', '/work/'], ['Expertise', '/services/'], ['Systems', '/systems/'], ['About', '/about/'], ['Contact', '/contact/']];
+    ? [['Work', '#selected-work'], ['Expertise', '#expertise'], ['About', '#about'], ['Testimonials', '#testimonials'], ['Contact', '#contact']]
+    : [['Work', '/work/'], ['Expertise', '/services/'], ['Systems', '/systems/'], ['About', '/about/'], ['Testimonials', '/#testimonials'], ['Contact', '/contact/']];
   const navHref = path => path.startsWith('#') ? path : href(path);
+  // Let anchored testimonial navigation scroll without a cross-page transition.
+  addEventListener('pageswap', event => {
+    if (event.activation && new URL(event.activation.entry.url).hash === '#testimonials') {
+      event.viewTransition?.skipTransition();
+    }
+  });
   const brand = '<span class="brand-wordmark">Francis Jay D. Rotol<span class="brand-period">.</span></span>';
   const header = document.querySelector('[data-header]');
   if (header) {
