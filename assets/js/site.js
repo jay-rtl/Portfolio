@@ -3,12 +3,14 @@
   const data = window.PORTFOLIO_DATA;
   const home = document.body.hasAttribute('data-home');
   const nav = home
-    ? [['Work', '#selected-work'], ['Expertise', '#expertise'], ['About', '#about'], ['Testimonials', '#testimonials'], ['Contact', '#contact']]
-    : [['Work', '/work/'], ['Expertise', '/services/'], ['Systems', '/systems/'], ['About', '/about/'], ['Testimonials', '/#testimonials'], ['Contact', '/contact/']];
+    ? [['Work', '#selected-work'], ['Expertise', '#expertise'], ['About', '#about'], ['Testimonials', '#testimonials'], ['Resume', '/resume/'], ['Contact', '#contact']]
+    : [['Work', '/work/'], ['Expertise', '/services/'], ['Systems', '/systems/'], ['About', '/about/'], ['Testimonials', '/#testimonials'], ['Resume', '/resume/'], ['Contact', '/contact/']];
   const navHref = path => path.startsWith('#') ? path : href(path);
-  // Let anchored testimonial navigation scroll without a cross-page transition.
+  // Keep direct testimonial and resume navigation free of transition conflicts.
   addEventListener('pageswap', event => {
-    if (event.activation && new URL(event.activation.entry.url).hash === '#testimonials') {
+    if (!event.activation) return;
+    const destination = new URL(event.activation.entry.url);
+    if (destination.hash === '#testimonials' || destination.pathname.endsWith('/resume/')) {
       event.viewTransition?.skipTransition();
     }
   });
