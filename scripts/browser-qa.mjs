@@ -131,4 +131,3 @@ try {
   assert.deepEqual(failures,[]);
   console.log('PASS: workspace and route QA; no browser errors; all collected local links respond.');
 } finally { writeFileSync('.preview/browser-qa.json',JSON.stringify({failures,errors,links:[...links]},null,2)); await browser.close(); }
-
