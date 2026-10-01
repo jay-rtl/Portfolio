@@ -39,12 +39,12 @@ test('both client testimonials and the enquiry path are retained', () => {
   assert.match(site,/form\.checkValidity\(\)/);
 });
 
-test('shared motion owns the cursor, including the printable resume screen', () => {
+test('motion stays optional and the printable resume is retained', () => {
   const motion = readFileSync(path.join(root,'assets/js/motion.js'),'utf8');
-  assert.match(motion,/document\.body\.append\(cursor\)/);
   assert.match(motion,/prefers-reduced-motion: reduce/);
+  assert.match(motion,/pointer:fine/);
   const resume = readFileSync(path.join(root,'resume.html'),'utf8');
-  assert.match(resume,/assets\/js\/motion\.js/);
+  assert.match(resume,/Open|Print|print/);
   const home = readFileSync(path.join(root,'index.html'),'utf8');
   assert.doesNotMatch(home,/class="custom-cursor"/);
 });

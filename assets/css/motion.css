@@ -1,74 +1,16 @@
-/* Content stays visible when JavaScript or motion is unavailable. */
-.motion-ready [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 850ms var(--motion-ease),transform 850ms var(--motion-ease); transition-delay: var(--reveal-delay,0ms); }
-.motion-ready [data-reveal].is-visible { opacity: 1; transform: none; }
+/* Motion is deliberately finite. Content never depends on animation to appear. */
 @media (prefers-reduced-motion:no-preference) {
-  @view-transition { navigation: auto; }
+  .flow-track::before { animation: line-arrive 800ms ease-out both; transform-origin: left; }
+  .command-dialog[open] { animation: command-arrive 260ms cubic-bezier(.22,1,.36,1); }
+  .service-module:hover { translate: 0 -2px; }
 }
-::view-transition-old(root) { animation: page-out 220ms ease both; }
-::view-transition-new(root) { animation: page-in 420ms var(--motion-ease) both; }
-@keyframes page-out { to { opacity: 0; transform: translateY(-8px); } }
-@keyframes page-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-.intro { display: none; }
-@media (prefers-reduced-motion:no-preference) {
-  .hero.is-ready .hero-topline,.hero.is-ready h1,.hero.is-ready .hero-statement,.hero.is-ready .hero-bottom,.hero.is-ready .hero-index { animation: hero-arrive 850ms var(--motion-ease) both; }
-  .hero.is-ready h1 { animation-delay: 80ms; }
-  .hero.is-ready .hero-statement { animation-delay: 170ms; }
-  .hero.is-ready .hero-bottom { animation-delay: 260ms; }
-  .hero.is-ready .hero-index { animation-delay: 340ms; }
-}
-@keyframes hero-arrive { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-.custom-cursor { display: none; position: fixed; top: 0; left: 0; z-index: 150; width: 10px; height: 10px; margin: -5px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; color: var(--bg); font-size: 10px; align-items: center; justify-content: center; transition: width 240ms var(--motion-ease),height 240ms var(--motion-ease),margin 240ms var(--motion-ease),background 240ms; }
-.custom-cursor.is-expanded { width: 58px; height: 58px; margin: -29px; background: var(--accent); }
-.custom-cursor.is-link { width: 26px; height: 26px; margin: -13px; background: transparent; }
-.custom-cursor.is-field { opacity: 0; }
-.custom-cursor .icon-arrow { filter: none; }
-@media (min-width:801px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
-  .custom-cursor.is-on { display: flex; }
-  .project-shot,.case-image { perspective: 1000px; }
-  .project-shot .browser,.case-image .browser { transform: rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)); transition: transform 450ms var(--motion-ease); }
-  .button { transform: translate(var(--magnet-x,0px),var(--magnet-y,0px)); transition: transform 300ms var(--motion-ease),background var(--motion-fast); }
-  .info-card,.skill-card,.process-card,.price-card { transition: border-color 300ms,background 300ms,translate 400ms var(--motion-ease); }
-  .info-card:hover,.skill-card:hover,.process-card:hover,.price-card:hover { border-color: var(--accent); background: var(--surface2); translate: 0 -4px; }
-  .case-image img { transition: transform 650ms var(--motion-ease); }
-  .case-image:hover img { transform: scale(1.015); }
-}
-@media (prefers-reduced-motion:no-preference) {
-  .price-card { animation: hero-arrive 650ms var(--motion-ease) both; }
-  .price-card:nth-child(2) { animation-delay: 90ms; }
-  .price-card:nth-child(3) { animation-delay: 180ms; }
-  .nav-links.open { animation: hero-arrive 300ms var(--motion-ease) both; }
-}
-@media print {
-  .custom-cursor,.intro { display: none !important; }
-  [data-reveal] { opacity: 1 !important; transform: none !important; }
-}
-.intro.is-playing { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 48px 56px; background: var(--bg); pointer-events: none; animation: intro-exit 350ms 3600ms var(--motion-ease) forwards; }
-.intro-top,.intro-bottom { position: absolute; left: 56px; right: 56px; display: flex; justify-content: space-between; color: var(--muted); font-size: 10px; }
-.intro-top { top: 40px; }
-.intro-bottom { bottom: 40px; }
-.intro-name { max-width: 100%; font-size: 96px; line-height: 1.1; text-align: center; text-wrap: balance; overflow-wrap: break-word; animation: intro-name 650ms var(--motion-ease) both; }
-.intro-name > span { color: var(--accent); }
-.intro-roles { position: relative; overflow: hidden; width: min(340px,100%); height: 28px; margin-top: 24px; color: var(--accent); text-align: center; font-size: 12px; text-transform: uppercase; }
-.intro-roles > span { position: absolute; inset: 0; animation: intro-role 900ms var(--motion-ease) both; }
-.intro-roles > span:nth-child(2) { animation-delay: 900ms; }
-.intro-roles > span:nth-child(3) { animation-delay: 1800ms; }
-.intro-roles > span:nth-child(4) { animation-delay: 2700ms; }
-@keyframes intro-name { from { opacity: 0; transform: translateY(35px); } to { opacity: 1; transform: none; } }
-@keyframes intro-role { 0% { opacity: 0; transform: translateY(25px); } 25%,85% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-25px); } }
-@keyframes intro-exit { to { opacity: 0; transform: translateY(-24px); visibility: hidden; } }
-@media (max-width:560px) {
-  .intro.is-playing { padding: 24px; }
-  .intro-name { font-size: 36px; }
-  .intro-top,.intro-bottom { left: 24px; right: 24px; font-size: 8px; }
-  .intro-top { top: 24px; }
-  .intro-bottom { bottom: 24px; }
-  .intro-bottom > span:first-child { max-width: 170px; }
-}
+@keyframes panel-arrive { from { opacity: .4; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+@keyframes line-arrive { from { transform: scaleX(.3); opacity: .3; } to { transform: scaleX(1); opacity: 1; } }
 @media (prefers-reduced-motion:reduce) {
   html { scroll-behavior: auto; }
-  *,*::before,*::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-delay: 0ms !important; }
-  .motion-ready [data-reveal] { opacity: 1; transform: none; }
-  .intro.is-playing { display: none; }
-  .workflow-tabs::after { transform: scaleX(1); }
-  ::view-transition-old(root),::view-transition-new(root) { animation: none; }
+  *,*::before,*::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  [data-depth] { transform: none !important; }
 }
+@media print { .workspace-boot { display: none !important; } }
+
+@keyframes command-arrive { from {opacity:0;transform:translateY(8px) scale(.97);filter:blur(3px)} to {opacity:1;transform:none;filter:blur(0)} }
