@@ -61,11 +61,14 @@
     }
   });
   const clocks = document.querySelectorAll('[data-local-time]');
+  const dates = document.querySelectorAll('[data-local-date]');
   const updateTime = () => {
+    const now = new Date();
     clocks.forEach(clock => {
-    clock.dateTime = new Date().toISOString();
-    clock.textContent = new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Manila',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date());
+    clock.dateTime = now.toISOString();
+    clock.textContent = new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Manila',hour:'numeric',minute:'2-digit',hour12:true}).format(now);
     });
+    dates.forEach(date => { date.textContent = new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Manila',month:'short',day:'numeric',year:'numeric'}).format(now); });
   };
   updateTime();
   setInterval(() => { if (!document.hidden) updateTime(); },60000);
@@ -115,6 +118,7 @@
   });
   document.querySelectorAll('[data-explorer]').forEach(explorer => {
     const buttons=[...explorer.querySelectorAll('[data-project-index]')];
+    const mobileCards=[...explorer.querySelectorAll('[data-mobile-project-index]')];
     const panel=explorer.querySelector('.explorer-detail');
     const input=explorer.querySelector('input');
     const count=explorer.querySelector('.explorer-count');
@@ -140,7 +144,7 @@
     });
     const update = () => {
       const term=input.value.trim().toLowerCase();
-      buttons.forEach((b,i)=>{const p=data.projects[i];b.hidden=!(filter==='all'||p.filters.includes(filter))||!([p.title,p.category,...p.tech].join(' ').toLowerCase().includes(term));});
+      buttons.forEach((b,i)=>{const p=data.projects[i];const hidden=!(filter==='all'||p.filters.includes(filter))||!([p.title,p.category,...p.tech].join(' ').toLowerCase().includes(term));b.hidden=hidden;if(mobileCards[i])mobileCards[i].hidden=hidden;});
       const visible=available();
       count.textContent=visible.length?visible.length+' '+(visible.length===1?'project':'projects')+' in the workspace':'No projects found. Try another search or category.';
       if(!visible.length){panel.hidden=true;setTabs(buttons,-1);}

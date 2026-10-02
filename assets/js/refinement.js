@@ -25,9 +25,15 @@
   });
   const toggle=document.querySelector('.sidebar-toggle'),layout=document.querySelector('.app-layout');
   const tablet=matchMedia('(min-width:761px) and (max-width:1100px)');
-  const setCollapsed=value=>{layout?.classList.toggle('sidebar-collapsed',value);toggle?.setAttribute('aria-expanded',String(!value));};
+  const mobile=matchMedia('(max-width:760px)');
+  const setCollapsed=value=>{layout?.classList.toggle('sidebar-collapsed',value);toggle?.setAttribute('aria-expanded',String(!value));toggle?.setAttribute('aria-label',value?'Open navigation':'Close navigation');};
   toggle?.addEventListener('click',()=>setCollapsed(!layout.classList.contains('sidebar-collapsed')));
+  document.querySelector('.sidebar-backdrop')?.addEventListener('click',()=>setCollapsed(true));
+  document.querySelectorAll('.app-sidebar a').forEach(link=>link.addEventListener('click',()=>{if(mobile.matches)setCollapsed(true);}));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&mobile.matches&&!layout?.classList.contains('sidebar-collapsed')){setCollapsed(true);toggle?.focus();}});
+  if(mobile.matches)setCollapsed(true);
   tablet.addEventListener('change',()=>setCollapsed(false));
+  mobile.addEventListener('change',event=>setCollapsed(event.matches));
   const seen=new WeakSet(),loops=new Map();
   const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
     const el=entry.target;
