@@ -16,7 +16,7 @@ function components(prefix) {
   }
   return { C: context.window.WORKSPACE_COMPONENTS, D: context.window.WORKSPACE_DATA, projects: context.window.PORTFOLIO_DATA.projects };
 }
-for (const [file,kind] of [['index.html','home'],['work/index.html','projects'],['services/index.html','services'],['systems/index.html','systems'],['contact/index.html','contact']]) {
+for (const [file,kind] of [['index.html','home'],['work/index.html','projects'],['services/index.html','services'],['systems/index.html','systems'],['contact/index.html','contact'],['about/index.html','about']]) {
   const prefix=kind==='home'?'':'../';
   const { C,D,projects }=components(prefix);
   const explorer=()=>C.sectionHead('PROJECT EXPLORER / 09 PROJECTS','Built for the real world.','Select a project to explore the interface, the challenge, and the thinking behind it.')+C.projectExplorer()+'<noscript><nav aria-label="All case studies">'+projects.map(p=>'<p><a href="'+prefix+'work/'+p.slug+'/">'+p.title+'</a></p>').join('')+'</nav></noscript>';
@@ -30,10 +30,16 @@ for (const [file,kind] of [['index.html','home'],['work/index.html','projects'],
   }
   const target=path.join(root,file);
   let html=readFileSync(target,'utf8');
+  if (kind === 'about') {
+    // Keep the existing process, skills, and credentials below the shared profile.
+    const background = html.match(/<div id="background" data-about-background>([\s\S]*)<\/div><\/main>/)?.[1]
+      || html.slice(html.indexOf('<section class="band">'), html.indexOf('</main>'));
+    content += '<div id="background" data-about-background>' + background + '</div>';
+  }
   const scripts=(html.slice(html.indexOf('<body')).match(/<script src="[^"]+"><\/script>/g)||[]).join('');
   html=html.replace(/<main\b[^>]*>[\s\S]*?<\/main>/,'<main id="main" tabindex="-1">'+content+'</main>');
   // Replace only homepage body; the existing head (SEO, social cards, schema) remains intact.
-  if(kind==='home') html=html.slice(0,html.indexOf('<body'))+'<body data-home data-workspace="overview"><a class="skip-link" href="#main">Skip to content</a><noscript><nav class="fallback-navigation" aria-label="Workspace navigation">'+C.nav.map(([id,label])=>'<a href="#'+id+'">'+label+'</a>').join('')+'</nav></noscript><div data-header></div><main id="main" tabindex="-1">'+content+'</main><div data-footer></div>'+scripts+'</body></html>\n';
+  if(kind==='home') html=html.slice(0,html.indexOf('<body'))+'<body data-home data-workspace="overview"><a class="skip-link" href="#main">Skip to content</a><noscript><nav class="fallback-navigation" aria-label="Workspace navigation">'+C.nav.map(([id,label])=>'<a href="'+(id==='about'?'about/':'#'+id)+'">'+label+'</a>').join('')+'</nav></noscript><div data-header></div><main id="main" tabindex="-1">'+content+'</main><div data-footer></div>'+scripts+'</body></html>\n';
   writeFileSync(target,html.replace(/[ \t]+$/gm,''));
 }
-console.log('Generated five static workspace pages from shared data and components.');
+console.log('Generated six static workspace pages from shared data and components.');

@@ -30,6 +30,10 @@
     if (!home) return;
     const hash = location.hash.slice(1);
     const id = aliases[hash] || hash || 'overview';
+    if (id === 'about') {
+      location.replace(href('/about/'));
+      return;
+    }
     const active = views.find(v => v.id === id) || views[0];
     views.forEach(view => { view.hidden = view !== active; });
     document.querySelectorAll('[data-nav]').forEach(link => {
@@ -202,7 +206,7 @@
   if(dialog){
     const input=dialog.querySelector('input'),results=dialog.querySelector('[role=listbox]');
     let index=0,filtered=[],trigger;
-    const commands=[...C.nav.map(([id,label])=>({label:(id==='overview'?'Go to ':'View ')+label,detail:'Workspace',icon:id,url:home?href('/#'+id):href(C.routes[id])})),
+    const commands=[...C.nav.map(([id,label])=>({label:(id==='overview'?'Go to ':'View ')+label,detail:'Workspace',icon:id,url:home && id !== 'about'?href('/#'+id):href(C.routes[id])})),
       {label:'Open Resume',detail:'Profile',icon:'resume',url:href('/resume/')},
       {label:'Project pricing',detail:'Planning',icon:'layers',url:href('/pricing/')},
       {label:'Email Francis',detail:'Get in touch',icon:'contact',url:'mailto:'+window.WORKSPACE_DATA.profile.email},

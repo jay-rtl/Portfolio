@@ -14,7 +14,7 @@ const record=(condition,message)=>{if(!condition)failures.push(message);};
 page.on('pageerror',error=>errors.push(error.message));
 page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
 await page.addInitScript(()=>sessionStorage.setItem('francis-workspace-v2','seen'));
-const views=['overview','projects','systems','services','stack','about','testimonials','contact'];
+const views=['overview','projects','systems','services','stack','testimonials','contact'];
 const visit=async path=>{const response=await page.goto(base+path);if(response)record(response.status()===200,'HTTP '+path);};
 const settle=()=>page.waitForTimeout(440);
 const overflow=async label=>{
@@ -125,6 +125,16 @@ try {
   record((await page.locator('.app-brand').getAttribute('href')).endsWith('/Portfolio/'),'Subdirectory shell links');
   record(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior)==='auto','Reduced motion scroll');
   record(await page.locator('.workspace-boot').count()===0,'Reduced motion no intro');
+  for (const prefix of ['', '/Portfolio']) {
+    await visit(prefix+'/#about');
+    await page.waitForURL('**'+prefix+'/about/');
+    record(await page.locator('.profile-editorial').count()===1,'One About profile '+prefix);
+    record(await page.locator('#background').count()===1,'About credentials retained '+prefix);
+    record(await page.locator('.founder-note a').getAttribute('href')==='https://suroytabai.com/','Founder venture link '+prefix);
+    await page.locator('.biography-copy .text-link').click();
+    await page.waitForURL('**/about/#background');
+    record(await page.locator('#background').isVisible(),'Same-page credentials '+prefix);
+  }
   for(const route of links){const r=await page.request.get(base+route);record(r.status()===200,'Broken local link '+route);}
   record(errors.length===0,'Browser errors: '+errors.join('; '));
   writeFileSync('.preview/browser-qa.json',JSON.stringify({failures,errors,links:[...links]},null,2));
