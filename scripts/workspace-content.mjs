@@ -19,7 +19,7 @@ function components(prefix) {
 for (const [file,kind] of [['index.html','home'],['work/index.html','projects'],['services/index.html','services'],['systems/index.html','systems'],['contact/index.html','contact'],['about/index.html','about']]) {
   const prefix=kind==='home'?'':'../';
   const { C,D,projects }=components(prefix);
-  const explorer=()=>C.sectionHead('PROJECT EXPLORER / 09 PROJECTS','Built for the real world.','Select a project to explore the interface, the challenge, and the thinking behind it.')+C.projectExplorer()+'<noscript><nav aria-label="All case studies">'+projects.map(p=>'<p><a href="'+prefix+'work/'+p.slug+'/">'+p.title+'</a></p>').join('')+'</nav></noscript>';
+  const explorer=()=>C.sectionHead('PROJECT EXPLORER / '+String(projects.length).padStart(2,'0')+' PROJECTS','Built for the real world.','Select a project to explore the interface, the challenge, and the thinking behind it.')+C.projectExplorer()+'<noscript><nav aria-label="All case studies">'+projects.map(p=>'<p><a href="'+prefix+'work/'+p.slug+'/">'+p.title+'</a></p>').join('')+'</nav></noscript>';
   const views={overview:C.overview,projects:explorer,systems:C.systems,services:C.services,stack:C.stack,about:C.about,testimonials:C.testimonials,contact:C.contact};
   let content;
   if(kind==='home') content=C.nav.map(([id])=>'<section id="'+id+'" class="workspace-view" data-workspace-view aria-label="'+C.nav.find(([key])=>key===id)[1]+'">'+(id==='overview'?views[id]():views[id]().replace('<h2 tabindex="-1">','<h1 tabindex="-1">').replace('</h2>','</h1>'))+'</section>').join('\n');
