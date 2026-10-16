@@ -29,11 +29,15 @@ test('preview server never exposes repository internals or paths outside public 
     assert.equal(resolvePublicPath(unsafe),null,unsafe);
   }
 });
-test('both client testimonials and the enquiry path are retained', () => {
+test('existing and Esperanza client testimonials and the enquiry path are retained', () => {
   const home = readFileSync(path.join(root,'index.html'),'utf8');
   assert.match(home,/Margarita Grigoryan/);
   assert.match(home,/Francis is fast, talented/);
   assert.match(home,/Davis Pest Solutions/);
+  assert.match(home,/Working with Francis Rotol on the development of my website for Esperanza Coaching Collective was an exceptional experience\./);
+  assert.match(home,/genuine care for their clients and their vision\./);
+  assert.equal((home.match(/class="feedback-slide"/g) || []).length,4);
+  assert.match(home,/01 \/ 04<\/span>/);
   assert.match(home,/mailto:rotoljay03@gmail.com/);
   const site = readFileSync(path.join(root,'assets/js/site.js'),'utf8');
   assert.match(site,/https:\/\/mail\.google\.com\/mail\//);

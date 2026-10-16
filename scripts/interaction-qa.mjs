@@ -23,8 +23,14 @@ await p.locator('.sidebar-toggle').click();await p.locator('.app-sidebar').waitF
 await p.locator('.workspace-nav [data-nav=projects]').click();await p.waitForURL('**/#projects');await p.locator('#projects').waitFor({state:'visible'});await p.locator('.app-sidebar').waitFor({state:'hidden'});assert.equal(await p.locator('.app-sidebar').isVisible(),false);
 await p.locator('[data-open-command]').click();await p.locator('.command-dialog input').fill('testimonials');await p.keyboard.press('Enter');
 await swipe('[data-testimonials]');assert.equal(await p.locator('.feedback-slide:visible cite').innerText(),'Acerbox Builds');
+await p.locator('[data-feedback-select="3"]').click();
+assert.equal(await p.locator('.feedback-slide:visible cite').innerText(),'Esperanza Coaching Collective');
+assert.equal(await p.locator('[data-feedback-count]').innerText(),'04 / 04');
+assert.equal(await p.locator('.feedback-slide:visible blockquote').innerText(),await p.evaluate(()=>window.WORKSPACE_DATA.testimonials[3].quote));
+assert.equal(await p.locator('.feedback-slide:visible .feedback-links a').last().getAttribute('href'),'https://esperanzacoachingcollective.com/');
+await p.locator('[data-feedback-next]').click();assert.equal(await p.locator('[data-feedback-count]').innerText(),'01 / 04');
 await p.locator('.mobile-navigation [data-nav=contact]').click();assert.equal(await p.locator('#contact-form button[type=submit]').isEnabled(),true);
 await p.emulateMedia({reducedMotion:'reduce'});await p.waitForTimeout(100);assert.equal(await p.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0);
-const nojs=await b.newContext({javaScriptEnabled:false});const n=await nojs.newPage();await n.goto(base+'/');assert.equal(await n.locator('.feedback-slide').count(),3);assert.equal(await n.locator('#contact-form button[type=submit]').isDisabled(),true);assert.equal(await n.locator('.fallback-navigation').isVisible(),true);
+const nojs=await b.newContext({javaScriptEnabled:false});const n=await nojs.newPage();await n.goto(base+'/');assert.equal(await n.locator('.feedback-slide').count(),4);assert.equal(await n.locator('#contact-form button[type=submit]').isDisabled(),true);assert.equal(await n.locator('.fallback-navigation').isVisible(),true);
 console.log('PASS touch swipe, mobile navigation, returning session intro, reduced motion, no-JS content and safe form fallback.');
 await b.close();

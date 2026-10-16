@@ -23,6 +23,14 @@ window.WORKSPACE_DATA = {
       "initials": "DP",
       "detail": "davispestsol.co.nz",
       "service": "Website design & development"
+    },
+    {
+      "name": "Esperanza Coaching Collective",
+      "quote": "Working with Francis Rotol on the development of my website for Esperanza Coaching Collective was an exceptional experience.\n\nFrancis has a remarkable ability to take a vision and bring it to life in a way that feels both aligned and elevated. He was thoughtful, detail-oriented, and intentional in every aspect of the process\u2014from design to functionality. I especially appreciated how he took the time to understand not just what I wanted visually, but the deeper purpose behind my work.\n\nThroughout the project, he was responsive, collaborative, and solution-focused, making what could have felt overwhelming feel seamless and well-supported.\n\nThe final result is a website that is not only visually beautiful, but also intuitive, professional, and a true reflection of my brand.\n\nI highly recommend Francis to anyone looking for a developer who combines technical expertise with genuine care for their clients and their vision.",
+      "slug": "esperanza-coaching",
+      "initials": "EC",
+      "detail": "esperanzacoachingcollective.com",
+      "service": "Website design & development"
     }
   ],
   "services": [
