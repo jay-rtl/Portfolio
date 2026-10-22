@@ -6,7 +6,7 @@ import { root, portfolioData, resolvePublicPath } from '../scripts/project.mjs';
 
 test('all existing projects retain screenshots, case routes, and required content', () => {
   const data = portfolioData();
-  assert.equal(data.projects.length,10);
+  assert.equal(data.projects.length,11);
   for (const project of data.projects) {
     assert(existsSync(path.join(root,project.image)), project.slug + ' preview');
     assert(existsSync(path.join(root,'work',project.slug,'index.html')), project.slug + ' case study');
@@ -16,6 +16,7 @@ test('all existing projects retain screenshots, case routes, and required conten
   assert.equal(data.projects.find(p => p.slug === 'davis-pest-solutions').url,'https://davispestsol.co.nz/');
   assert.equal(data.projects.find(p => p.slug === 'acerbox-builds').url,'https://acerboxbuilds.com/');
   assert.equal(data.projects.find(p => p.slug === 'tastar').url,'https://tastar.com.au/');
+  assert.equal(data.projects.find(p => p.slug === 'ihelp-friendship').url,'https://www.ihelpfriendship.com/');
   assert.equal(data.projects.filter(p => p.workflows).length,2);
 });
 test('local routes support both root preview and the GitHub Pages subdirectory', () => {
@@ -23,6 +24,21 @@ test('local routes support both root preview and the GitHub Pages subdirectory',
   assert.equal(resolvePublicPath('/Portfolio/'),path.join(root,'index.html'));
   assert.equal(resolvePublicPath('/Portfolio/work/serviceflow/'),path.join(root,'work/serviceflow/index.html'));
   assert.equal(resolvePublicPath('/assets/js/site.js?v=8'),path.join(root,'assets/js/site.js'));
+});
+
+test('iHelp Friendship has crawlable content, preview metadata, and a canonical sitemap entry', () => {
+  const html = readFileSync(path.join(root,'work/ihelp-friendship/index.html'),'utf8');
+  const canonical = 'https://francisjaywork.tech/work/ihelp-friendship/';
+  assert(html.includes('<link rel="canonical" href="'+canonical+'">'));
+  assert.match(html,/<title>iHelp Friendship Humanitarian Website \| Francis Jay D\. Rotol<\/title>/);
+  assert.match(html,/<h1>iHelp Friendship<\/h1>/);
+  assert.match(html,/name="description" content="[^"]+"/);
+  assert.match(html,/property="og:image" content="https:\/\/francisjaywork\.tech\/img\/ihelp-friendship-preview\.webp"/);
+  assert.match(html,/name="twitter:card" content="summary_large_image"/);
+  const structured = JSON.parse(html.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)[1]);
+  assert.equal(structured['@type'],'CreativeWork');
+  assert.equal(structured.url,canonical);
+  assert(readFileSync(path.join(root,'sitemap.xml'),'utf8').includes('<loc>'+canonical+'</loc>'));
 });
 test('preview server never exposes repository internals or paths outside public directories', () => {
   for (const unsafe of ['/.git/config','/scripts/build.mjs','/package.json','/img/../../package.json','/img/%2e%2e/%2e%2e/package.json','/assets%5c..%5cpackage.json','/img/%00','/%ZZ']) {
@@ -73,7 +89,7 @@ test('custom domain, crawler files, and founder role stay consistent', () => {
   const sitemap = readFileSync(path.join(root,'sitemap.xml'),'utf8');
   assert.match(robots,new RegExp('Sitemap: ' + domain.replaceAll('.','\\.') + '/sitemap\\.xml'));
   assert(!sitemap.includes('jay-rtl.github.io'));
-  assert.equal((sitemap.match(/<loc>/g) || []).length,18);
+  assert.equal((sitemap.match(/<loc>/g) || []).length,19);
   assert.equal(readFileSync(path.join(root,'CNAME'),'utf8').trim(),'francisjaywork.tech');
   for (const file of ['index.html','about/index.html','resume/index.html','resume.html']) {
     const html = readFileSync(path.join(root,file),'utf8');
