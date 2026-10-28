@@ -14,10 +14,18 @@ test('all existing projects retain screenshots, case routes, and required conten
     if (project.url) assert.equal(new URL(project.url).protocol,'https:');
   }
   assert.equal(data.projects.find(p => p.slug === 'davis-pest-solutions').url,'https://davispestsol.co.nz/');
+  assert.equal(data.projects.find(p => p.slug === 'davis-pest-solutions').image,'img/davis-pest-solutions-updated.webp');
   assert.equal(data.projects.find(p => p.slug === 'acerbox-builds').url,'https://acerboxbuilds.com/');
   assert.equal(data.projects.find(p => p.slug === 'tastar').url,'https://tastar.com.au/');
   assert.equal(data.projects.find(p => p.slug === 'ihelp-friendship').url,'https://www.ihelpfriendship.com/');
   assert.equal(data.projects.filter(p => p.workflows).length,2);
+});
+
+test('Davis preview and case-study sharing image use the updated homepage capture', () => {
+  const project = portfolioData().projects.find(p => p.slug === 'davis-pest-solutions');
+  assert.match(project.imageAlt,/EJ beside the service vehicle/);
+  const html = readFileSync(path.join(root,'work/davis-pest-solutions/index.html'),'utf8');
+  assert.match(html,/property="og:image" content="https:\/\/francisjaywork\.tech\/img\/davis-pest-solutions-updated\.webp"/);
 });
 test('local routes support both root preview and the GitHub Pages subdirectory', () => {
   assert.equal(resolvePublicPath('/'),path.join(root,'index.html'));
