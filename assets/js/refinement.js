@@ -39,7 +39,7 @@
     const el=entry.target;
     if(entry.isIntersecting&&!seen.has(el)){
       seen.add(el);
-      if(gsap&&!reduced.matches&&fine.matches)gsap.fromTo(el,{opacity:.35,y:12},{opacity:1,y:0,duration:.55,delay:Math.min([...el.parentElement.children].indexOf(el)*.025,.1),ease:'power3.out',clearProps:'transform,opacity'});
+      if(gsap&&!document.body.classList.contains('obsidian')&&!reduced.matches&&fine.matches)gsap.fromTo(el,{opacity:.35,y:12},{opacity:1,y:0,duration:.55,delay:Math.min([...el.parentElement.children].indexOf(el)*.025,.1),ease:'power3.out',clearProps:'transform,opacity'});
     }
     const loop=loops.get(el);if(loop){if(entry.isIntersecting&&fine.matches&&!reduced.matches&&!document.hidden)loop.resume();else loop.pause();}
   }),{threshold:.08});

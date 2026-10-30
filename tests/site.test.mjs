@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { root, portfolioData, resolvePublicPath } from '../scripts/project.mjs';
+import vm from 'node:vm';
 
 test('all existing projects retain screenshots, case routes, and required content', () => {
   const data = portfolioData();
@@ -54,7 +55,7 @@ test('preview server never exposes repository internals or paths outside public 
   }
 });
 test('existing and Esperanza client testimonials and the enquiry path are retained', () => {
-  const home = readFileSync(path.join(root,'index.html'),'utf8');
+  const home = readFileSync(path.join(root,'testimonials/index.html'),'utf8');
   assert.match(home,/Margarita Grigoryan/);
   assert.match(home,/Francis is fast, talented/);
   assert.match(home,/Davis Pest Solutions/);
@@ -62,7 +63,7 @@ test('existing and Esperanza client testimonials and the enquiry path are retain
   assert.match(home,/genuine care for their clients and their vision\./);
   assert.equal((home.match(/class="feedback-slide"/g) || []).length,4);
   assert.match(home,/01 \/ 04<\/span>/);
-  assert.match(home,/mailto:rotoljay03@gmail.com/);
+  assert.match(readFileSync(path.join(root,'contact/index.html'),'utf8'),/mailto:rotoljay03@gmail.com/);
   const site = readFileSync(path.join(root,'assets/js/site.js'),'utf8');
   assert.match(site,/https:\/\/mail\.google\.com\/mail\//);
   assert.match(site,/form\.checkValidity\(\)/);
@@ -82,7 +83,7 @@ test('branded sharing image and main-page preview metadata are complete', () => 
   const png = readFileSync(path.join(root,'img/portfolio-social-preview.png'));
   assert.equal(png.readUInt32BE(16),1200);
   assert.equal(png.readUInt32BE(20),630);
-  for (const file of ['index.html','about/index.html','contact/index.html','pricing/index.html','resume/index.html','services/index.html','systems/index.html','work/index.html','resume.html']) {
+  for (const file of ['index.html','about/index.html','contact/index.html','pricing/index.html','resume/index.html','services/index.html','systems/index.html','skills/index.html','testimonials/index.html','work/index.html','resume.html']) {
     const html = readFileSync(path.join(root,file),'utf8');
     assert.equal((html.match(/property="og:image"/g) || []).length,1,file);
     assert.match(html,/property="og:image" content="https:\/\/francisjaywork\.tech\/img\/portfolio-social-preview\.png"/);
@@ -97,10 +98,86 @@ test('custom domain, crawler files, and founder role stay consistent', () => {
   const sitemap = readFileSync(path.join(root,'sitemap.xml'),'utf8');
   assert.match(robots,new RegExp('Sitemap: ' + domain.replaceAll('.','\\.') + '/sitemap\\.xml'));
   assert(!sitemap.includes('jay-rtl.github.io'));
-  assert.equal((sitemap.match(/<loc>/g) || []).length,19);
+  assert.equal((sitemap.match(/<loc>/g) || []).length,21);
   assert.equal(readFileSync(path.join(root,'CNAME'),'utf8').trim(),'francisjaywork.tech');
-  for (const file of ['index.html','about/index.html','resume/index.html','resume.html']) {
+  for (const file of ['about/index.html','resume/index.html','resume.html']) {
     const html = readFileSync(path.join(root,file),'utf8');
     assert.match(html,/SuroyTabai/,file);
   }
+});
+
+test('Obsidian keeps real claims, every project, and all verified testimonials', () => {
+  const home=readFileSync(path.join(root,'index.html'),'utf8');
+  const feedback=readFileSync(path.join(root,'testimonials/index.html'),'utf8');
+  const work=readFileSync(path.join(root,'work/index.html'),'utf8');
+  assert.match(home,/data-hero-home/);
+  assert.match(home,/Francis Jay/);assert.match(home,/Rotol/);
+  assert.doesNotMatch(home,/Reyes|100%.*[Ss]atisfaction|4\+.*[Yy]ears/);
+  const context={window:{}};
+  vm.runInNewContext(readFileSync(path.join(root,'assets/js/workspace-data.js'),'utf8'),context);
+  assert.equal(context.window.WORKSPACE_DATA.testimonials.length,4);
+  for(const review of context.window.WORKSPACE_DATA.testimonials) {
+    const start=review.quote.split('\n\n')[0].replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    assert(feedback.includes(start),review.name+' static quote retained');
+  }
+  for(const project of portfolioData().projects) {
+    assert(work.includes(project.title.replaceAll('&','&amp;')),project.slug+' retained');
+    const html=readFileSync(path.join(root,'work',project.slug,'index.html'),'utf8');
+    assert.match(html,/<h1>/,project.slug+' crawlable primary content');
+  }
+  assert(readFileSync(path.join(root,'about/index.html'),'utf8').includes('https://suroytabai.com/'));
+});
+
+test('primary navigation uses independent pages and the home contains only its hero', () => {
+  const home=readFileSync(path.join(root,'index.html'),'utf8');
+  assert.equal((home.match(/data-workspace-view/g)||[]).length,1);
+  assert(!home.includes('data-scroll-home'));
+  assert(!home.includes('profile-editorial'));
+  assert(!home.includes('data-explorer'));
+  assert(!home.includes('data-testimonials'));
+  const context={window:{},URL};
+  context.window.PORTFOLIO_UI={escape:String,href:route=>'/Portfolio'+route};
+  vm.createContext(context);
+  for(const file of ['data.js','workspace-data.js','workspace-components.js','obsidian-components.js'])vm.runInContext(readFileSync(path.join(root,'assets/js',file),'utf8'),context);
+  const components=context.window.WORKSPACE_COMPONENTS;
+  const shell=components.shell(true,'overview');
+  for(const [id] of components.nav)assert(shell.side.includes('href="/Portfolio'+components.routes[id]+'"'),id+' independent link');
+  for(const route of ['skills','testimonials']) {
+    const html=readFileSync(path.join(root,route,'index.html'),'utf8');
+    assert(html.includes('rel="canonical" href="https://francisjaywork.tech/'+route+'/"'));
+    assert.equal(resolvePublicPath('/Portfolio/'+route+'/'),path.join(root,route,'index.html'));
+    assert.match(html,/<h1/);
+  }
+});
+
+test('Obsidian serves local assets with real HTML, progressive WebGL, and reduced-motion support', () => {
+  const home=readFileSync(path.join(root,'index.html'),'utf8');
+  assert(home.includes('obsidian-components.js'));
+  assert(home.includes('ScrollTrigger.min.js'));
+  assert(home.includes('data-hero-next'));
+  assert(!home.includes('data-scene-motion'));
+  assert(existsSync(path.join(root,'assets/vendor/obsidian-scene.min.js')));
+  assert(existsSync(path.join(root,'img/obsidian-environment.webp')));
+  const scene=readFileSync(path.join(root,'assets/js/obsidian-scene.js'),'utf8');
+  assert(scene.includes('prefers-reduced-motion'));
+  assert(scene.includes('webgl2'));
+  assert(scene.includes('dispose()'));
+  const controller=readFileSync(path.join(root,'assets/js/obsidian.js'),'utf8');
+  assert(controller.includes('import(href('));
+  assert(controller.includes('inert=open'));
+  assert(controller.includes('context?.revert()'));
+});
+
+test('Obsidian is dark-only and the landscape is not painted over the HTML background', () => {
+  const state={window:{},document:{documentElement:{dataset:{},style:{}},querySelector:()=>null,addEventListener:()=>{}}};
+  vm.runInNewContext(readFileSync(path.join(root,'assets/js/theme.js'),'utf8'),state);
+  assert.equal(state.document.documentElement.dataset.theme,'dark');
+  assert.equal(state.document.documentElement.style.colorScheme,'dark');
+  assert.equal(state.window.PORTFOLIO_THEME,undefined);
+  const controls=readFileSync(path.join(root,'assets/js/obsidian-components.js'),'utf8');
+  assert(!controls.includes('data-theme-toggle'));
+  const css=readFileSync(path.join(root,'assets/css/obsidian.css'),'utf8');
+  assert(!css.includes('[data-theme=light]'));
+  const scene=readFileSync(path.join(root,'assets/js/obsidian-scene.js'),'utf8');
+  assert.match(scene,/background\.onBeforeRender=.*colorWrite=activeRenderer\.getRenderTarget\(\)!==null/);
 });

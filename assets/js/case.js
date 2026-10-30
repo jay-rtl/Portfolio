@@ -26,7 +26,7 @@
     '<section class="case-image-section"><div class="wrap"><a class="case-image" href="' + href('/' + p.image) +
     '" target="_blank" rel="noopener" aria-label="Open full ' + escape(p.title) + ' screenshot"><div class="browser"><div class="browser-bar"><span></span><span></span><span></span><small>' +
     escape(p.title) + '</small></div><img src="' + href('/' + p.image) + '" alt="' + escape(p.imageAlt || p.title + ' website screenshot') +
-    '" decoding="async"></div></a></div></section>' +
+    '" width="1200" height="650" decoding="async"></div></a></div></section>' +
     narrative('01 / Overview', 'Built around a business need.', overview) +
     narrative('02 / The challenge', 'What needed to work better.', challenge) +
     narrative('03 / The solution', 'A considered approach.', solution) +

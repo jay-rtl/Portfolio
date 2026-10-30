@@ -4,18 +4,6 @@
   const data = window.PORTFOLIO_DATA;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const home = document.body.hasAttribute('data-home');
-  const themeButton = document.querySelector('[data-theme-toggle]');
-  const updateThemeButton = () => {
-    if (!themeButton) return;
-    const light = document.documentElement.dataset.theme === 'light';
-    const label = 'Switch to ' + (light ? 'dark' : 'light') + ' mode';
-    themeButton.innerHTML = C.icon(light ? 'moon' : 'sun');
-    themeButton.setAttribute('aria-label', label);
-    themeButton.title = label;
-  };
-  themeButton?.addEventListener('click', () => window.PORTFOLIO_THEME.toggle());
-  addEventListener('portfolio:theme', updateThemeButton);
-  updateThemeButton();
   const motion = element => {
     if (!element || reduced.matches) return;
     element.getAnimations().forEach(animation => animation.cancel());
@@ -30,8 +18,10 @@
     if (!home) return;
     const hash = location.hash.slice(1);
     const id = aliases[hash] || hash || 'overview';
-    if (id === 'about') {
-      location.replace(href('/about/'));
+    if (id !== 'overview' && C.routes[id]) {
+      const destination=new URL(href(C.routes[id]),location.href);
+      destination.search=location.search;
+      location.replace(destination.href);
       return;
     }
     const active = views.find(v => v.id === id) || views[0];
@@ -206,7 +196,7 @@
   if(dialog){
     const input=dialog.querySelector('input'),results=dialog.querySelector('[role=listbox]');
     let index=0,filtered=[],trigger;
-    const commands=[...C.nav.map(([id,label])=>({label:(id==='overview'?'Go to ':'View ')+label,detail:'Workspace',icon:id,url:home && id !== 'about'?href('/#'+id):href(C.routes[id])})),
+    const commands=[...C.nav.map(([id,label])=>({label:(id==='overview'?'Go to ':'View ')+label,detail:'Page',icon:id,url:href(C.routes[id])})),
       {label:'Open Resume',detail:'Profile',icon:'resume',url:href('/resume/')},
       {label:'Project pricing',detail:'Planning',icon:'layers',url:href('/pricing/')},
       {label:'Email Francis',detail:'Get in touch',icon:'contact',url:'mailto:'+window.WORKSPACE_DATA.profile.email},

@@ -12,14 +12,18 @@
     "test:browser": "node scripts/browser-qa.mjs && node scripts/interaction-qa.mjs",
     "audit": "node scripts/lighthouse-qa.mjs",
     "prebuild": "node scripts/vendor-motion.mjs",
-    "test:refinement": "node scripts/refinement-qa.mjs"
+    "test:refinement": "node scripts/refinement-qa.mjs",
+    "test:obsidian": "node scripts/obsidian-qa.mjs",
+    "test:navigation": "node scripts/navigation-qa.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
+    "esbuild": "0.28.2",
     "lighthouse": "13.5.0",
     "playwright": "1.63.0"
   },
   "dependencies": {
-    "gsap": "3.15.0"
+    "gsap": "3.15.0",
+    "three": "0.186.1"
   }
 }

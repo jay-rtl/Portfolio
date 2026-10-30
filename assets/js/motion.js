@@ -25,7 +25,7 @@
   reduced.addEventListener('change',()=>{reset();if(reduced.matches)document.getAnimations().forEach(a=>a.cancel());});
   fine.addEventListener('change',reset);
   addEventListener('blur',reset);
-  if(!document.body.hasAttribute('data-home')||reduced.matches)return;
+  if(!document.body.hasAttribute('data-home')||document.body.hasAttribute('data-hero-home')||reduced.matches)return;
   let seen=false;
   try{seen=sessionStorage.getItem('francis-workspace-v2')==='seen';sessionStorage.setItem('francis-workspace-v2','seen');}catch{/* Content remains available when storage is blocked. */}
   if(seen||location.hash)return;

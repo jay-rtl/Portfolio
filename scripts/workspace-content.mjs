@@ -11,18 +11,18 @@ function components(prefix) {
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   context.window.PORTFOLIO_UI = { escape, href: route => prefix + route.slice(1) };
   vm.createContext(context);
-  for (const file of ['data.js','workspace-data.js','workspace-components.js']) {
+  for (const file of ['data.js','workspace-data.js','workspace-components.js','obsidian-components.js']) {
     vm.runInContext(readFileSync(path.join(root,'assets/js',file),'utf8'), context);
   }
-  return { C: context.window.WORKSPACE_COMPONENTS, D: context.window.WORKSPACE_DATA, projects: context.window.PORTFOLIO_DATA.projects };
+  return { C: context.window.WORKSPACE_COMPONENTS, D: context.window.WORKSPACE_DATA, projects: context.window.PORTFOLIO_DATA.projects, context };
 }
-for (const [file,kind] of [['index.html','home'],['work/index.html','projects'],['services/index.html','services'],['systems/index.html','systems'],['contact/index.html','contact'],['about/index.html','about']]) {
+for (const [file,kind] of [['index.html','home'],['work/index.html','projects'],['services/index.html','services'],['systems/index.html','systems'],['skills/index.html','stack'],['testimonials/index.html','testimonials'],['contact/index.html','contact'],['about/index.html','about']]) {
   const prefix=kind==='home'?'':'../';
   const { C,D,projects }=components(prefix);
   const explorer=()=>C.sectionHead('PROJECT EXPLORER / '+String(projects.length).padStart(2,'0')+' PROJECTS','Built for the real world.','Select a project to explore the interface, the challenge, and the thinking behind it.')+C.projectExplorer()+'<noscript><nav aria-label="All case studies">'+projects.map(p=>'<p><a href="'+prefix+'work/'+p.slug+'/">'+p.title+'</a></p>').join('')+'</nav></noscript>';
   const views={overview:C.overview,projects:explorer,systems:C.systems,services:C.services,stack:C.stack,about:C.about,testimonials:C.testimonials,contact:C.contact};
   let content;
-  if(kind==='home') content=C.nav.map(([id])=>'<section id="'+id+'" class="workspace-view" data-workspace-view aria-label="'+C.nav.find(([key])=>key===id)[1]+'">'+(id==='overview'?views[id]():views[id]().replace('<h2 tabindex="-1">','<h1 tabindex="-1">').replace('</h2>','</h1>'))+'</section>').join('\n');
+  if(kind==='home') content='<section id="overview" class="workspace-view" data-workspace-view aria-label="Home">'+C.overview()+'</section>';
   else {
     content=views[kind]();
     content=content.replace('<h2 tabindex="-1">','<h1 tabindex="-1">').replace('</h2>','</h1>');
@@ -39,7 +39,24 @@ for (const [file,kind] of [['index.html','home'],['work/index.html','projects'],
   const scripts=(html.slice(html.indexOf('<body')).match(/<script src="[^"]+"><\/script>/g)||[]).join('');
   html=html.replace(/<main\b[^>]*>[\s\S]*?<\/main>/,'<main id="main" tabindex="-1">'+content+'</main>');
   // Replace only homepage body; the existing head (SEO, social cards, schema) remains intact.
-  if(kind==='home') html=html.slice(0,html.indexOf('<body'))+'<body data-home data-workspace="overview"><a class="skip-link" href="#main">Skip to content</a><noscript><nav class="fallback-navigation" aria-label="Workspace navigation">'+C.nav.map(([id,label])=>'<a href="'+(id==='about'?'about/':'#'+id)+'">'+label+'</a>').join('')+'</nav></noscript><div data-header></div><main id="main" tabindex="-1">'+content+'</main><div data-footer></div>'+scripts+'</body></html>\n';
+  if(kind==='home') html=html.slice(0,html.indexOf('<body'))+'<body class="obsidian" data-home data-hero-home data-workspace="overview"><a class="skip-link" href="#main">Skip to content</a><noscript><nav class="fallback-navigation" aria-label="Portfolio navigation">'+C.nav.map(([id,label])=>'<a href="'+(C.routes[id].slice(1)||'./')+'">'+label+'</a>').join('')+'</nav></noscript><div data-header></div><main id="main" tabindex="-1">'+content+'</main><div data-footer></div>'+scripts+'</body></html>\n';
+  if(kind!=='home') {
+    const fallback='<noscript><nav class="fallback-navigation" aria-label="Portfolio navigation">'+C.nav.map(([id,label])=>'<a href="'+prefix+C.routes[id].slice(1)+'">'+label+'</a>').join('')+'</nav></noscript>';
+    html=html.replace(/<noscript><nav class="fallback-navigation"[\s\S]*?<\/nav><\/noscript>/g,'').replace('<div data-header></div>',fallback+'<div data-header></div>');
+  }
   writeFileSync(target,html.replace(/[ \t]+$/gm,''));
 }
-console.log('Generated six static workspace pages from shared data and components.');
+const {projects,context,C}=components('../../');
+context.window.PORTFOLIO_UI.icon=(name='arrow-up-right')=>'<img class="icon-arrow" src="../../assets/icons/'+name+'.svg" alt="" aria-hidden="true">';
+context.window.PORTFOLIO_UI.tag=value=>'<span class="tag">'+context.window.PORTFOLIO_UI.escape(value)+'</span>';
+for(const project of projects) {
+  const main={innerHTML:''};
+  context.document={body:{dataset:{case:project.slug}},querySelector:selector=>selector==='main[data-case]'?main:null};
+  vm.runInContext(readFileSync(path.join(root,'assets/js/case.js'),'utf8'),context);
+  const target=path.join(root,'work',project.slug,'index.html');
+  let html=readFileSync(target,'utf8');
+  const fallback='<noscript><nav class="fallback-navigation" aria-label="Portfolio navigation">'+C.nav.map(([id,label])=>'<a href="../../'+C.routes[id].slice(1)+'">'+label+'</a>').join('')+'</nav></noscript>';
+  html=html.replace(/<noscript><nav class="fallback-navigation"[\s\S]*?<\/nav><\/noscript>/g,'').replace('<div data-header></div>',fallback+'<div data-header></div>');
+  writeFileSync(target,html.replace(/<main\b[^>]*>[\s\S]*?<\/main>/,'<main id="main" data-case tabindex="-1">'+main.innerHTML+'</main>'));
+}
+console.log('Generated eight independent portfolio pages and eleven crawlable case studies.');

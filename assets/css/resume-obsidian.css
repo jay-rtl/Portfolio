@@ -1,0 +1,14 @@
+/* Screen presentation only. Existing readable print styles remain untouched. */
+@media screen {
+  :root {color-scheme:dark;--canvas:#050505;--paper:#101114;--ink:#f5f6f7;--muted:#bfc3ca;--subtle:#a0a3aa;--accent:#e3e5e8;--accent-soft:#23252a;--side:#151619;--line:#ffffff26;}
+  body {font-family:'Segoe UI',Arial,Helvetica,sans-serif;}
+  .page {box-shadow:0 24px 80px #0006;}
+  .top::after {content:'FJR.';font-size:18px;font-style:italic;}
+  .skill {color:#e3e5e8;}
+  a:focus-visible {outline:2px solid #f5f6f7;outline-offset:4px;}
+}
+@media print {
+  :root {color-scheme:light;--canvas:#fff;--paper:#fff;--ink:#151619;--muted:#4e5259;--subtle:#5b6068;--accent:#24272d;--accent-soft:#eeeeef;--side:#f5f5f5;--line:#ccc;}
+  .skill {color:#30343b;}
+  .top::after {content:'FJR.';font-size:18px;font-style:italic;}
+}

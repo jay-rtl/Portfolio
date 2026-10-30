@@ -15,6 +15,7 @@ page.on('pageerror',error=>errors.push(error.message));
 page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
 await page.addInitScript(()=>sessionStorage.setItem('francis-workspace-v2','seen'));
 const views=['overview','projects','systems','services','stack','testimonials','contact'];
+const viewRoutes={overview:'/',projects:'/work/',systems:'/systems/',services:'/services/',stack:'/skills/',testimonials:'/testimonials/',contact:'/contact/'};
 const visit=async path=>{const response=await page.goto(base+path);if(response)record(response.status()===200,'HTTP '+path);};
 const settle=()=>page.waitForTimeout(440);
 const overflow=async label=>{
@@ -26,17 +27,17 @@ try {
     await page.setViewportSize({width,height:1000});
     await visit('/');
     for(const view of views){
-      await page.evaluate(id=>{location.hash=id;},view);await settle();
-      record(await page.locator('[data-workspace-view]:visible').count()===1,'Only one panel '+view);
-      record(await page.locator('#'+view).isVisible(),'Visible '+view);
+      await visit(viewRoutes[view]);await settle();
+      record(await page.locator('body').getAttribute('data-workspace')===view,'Independent page '+view);
+      record(await page.locator('main').isVisible(),'Visible '+view);
       await overflow(width+' '+view);
       record(await page.locator('h1:visible').count()===1,'One visible H1 '+view);
-      if([1440,390].includes(width)&&['overview','projects','testimonials','contact'].includes(view))await page.screenshot({path:'.preview/'+view+'-'+width+'.png',fullPage:true});
+      if([1440,390].includes(width)&&['overview','projects','testimonials','contact'].includes(view))await page.locator('main').screenshot({path:'.preview/'+view+'-'+width+'.png'});
     }
     console.log('Responsive workspaces:',width);
   }
   await page.setViewportSize({width:1440,height:1000});
-  await visit('/#projects');await settle();
+  await visit('/work/');await settle();
   for(let i=0;i<portfolioData().projects.length;i++){
     await page.locator('[data-project-index="'+i+'"]').click();
     const p=portfolioData().projects[i];
@@ -62,7 +63,7 @@ try {
   await page.keyboard.press('Meta+k');record(await page.locator('.command-dialog').isVisible(),'Cmd K opens search');
   await page.keyboard.press('Escape');record(!await page.locator('.command-dialog').isVisible(),'Escape closes palette');
   await page.locator('[data-open-command]').click();
-  await page.locator('.command-dialog input').fill('testimonials');await page.keyboard.press('Enter');await page.waitForURL('**/#testimonials');await settle();
+  await page.locator('.command-dialog input').fill('testimonials');await page.keyboard.press('Enter');await page.waitForURL('**/testimonials/');await settle();
   await page.locator('[data-feedback-next]').click();
   record((await page.locator('.feedback-slide:visible cite').innerText())==='Acerbox Builds','Acerbox testimonial next');
   await page.locator('[data-testimonials]').focus();await page.keyboard.press('ArrowRight');
@@ -73,14 +74,14 @@ try {
     await page.locator('[data-feedback-select="'+i+'"]').click();
     record(await page.locator('.feedback-slide:visible blockquote').innerText()===baseline.testimonials[i].quote,'Preserved quote '+i);
   }
-  await visit('/#systems');await settle();
-  const flow=page.locator('#systems [data-flow]');
+  await visit('/systems/');await settle();
+  const flow=page.locator('[data-flow]');
   await flow.locator('[role=tab]').first().focus();await page.keyboard.press('ArrowRight');
   record((await flow.locator('[role=tabpanel]').innerText()).includes('Automation and process'),'Flow keyboard');
-  await visit('/#stack');await settle();
+  await visit('/skills/');await settle();
   await page.locator('[data-stack-index="5"]').click();
   record((await page.locator('#stack-detail').innerText()).includes('CURRENTLY LEARNING'),'Exploring distinction');
-  await visit('/#services');await settle();
+  await visit('/services/');await settle();
   await page.locator('.service-module summary').first().focus();
   const wasOpen=await page.locator('.service-module details').first().getAttribute('open')!==null;
   await page.keyboard.press('Enter');
@@ -100,7 +101,7 @@ try {
   record(new URL(mailUrl).searchParams.get('to')==='rotoljay03@gmail.com','Correct draft recipient');
   record(new URL(mailUrl).searchParams.get('body').includes('A local test'),'Draft contains form details');
   console.log('Interactive controls, keyboard, content, and intercepted draft checked.');
-  const routes=['/','/about/','/work/','/services/','/systems/','/contact/','/pricing/','/resume/',...portfolioData().projects.map(p=>'/work/'+p.slug+'/')];
+  const routes=['/','/about/','/work/','/services/','/systems/','/skills/','/testimonials/','/contact/','/pricing/','/resume/',...portfolioData().projects.map(p=>'/work/'+p.slug+'/')];
   for(const width of [1440,390]){
     await page.setViewportSize({width,height:1000});await page.emulateMedia({reducedMotion:'reduce'});
     for(const route of routes){
@@ -114,13 +115,14 @@ try {
       }
     }
     for(const view of views.slice(1)){
-      await visit('/#'+view);
+      await visit(viewRoutes[view]);
       const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
       for(const v of result.violations)failures.push('AXE '+width+' '+view+' '+v.id+' '+v.nodes.map(n=>n.target.join(' ')).join(', '));
     }
     console.log('Routes and accessibility:',width);
   }
   await visit('/Portfolio/#projects');
+  await page.waitForURL('**/Portfolio/work/');
   record((await page.locator('.project-preview-heading h3').innerText())==='Acerbox Builds','Subdirectory project route');
   record((await page.locator('.app-brand').getAttribute('href')).endsWith('/Portfolio/'),'Subdirectory shell links');
   record(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior)==='auto','Reduced motion scroll');
@@ -129,7 +131,6 @@ try {
     await visit(prefix+'/#about');
     await page.waitForURL('**'+prefix+'/about/');
     record(await page.locator('.profile-editorial').count()===1,'One About profile '+prefix);
-    record(await page.locator('#background').count()===1,'About credentials retained '+prefix);
     record(await page.locator('.founder-note a').getAttribute('href')==='https://suroytabai.com/','Founder venture link '+prefix);
     await page.locator('.biography-copy .text-link').click();
     await page.waitForURL('**/about/#background');

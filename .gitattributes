@@ -1,0 +1,2 @@
+# Vendored JavaScript includes upstream GLSL strings and license formatting.
+assets/vendor/*.js -whitespace

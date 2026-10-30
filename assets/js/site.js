@@ -6,6 +6,7 @@
   const main = document.querySelector('main');
   const active = document.body.dataset.workspace || (home ? 'overview' : 'projects');
   if (components && main) {
+    document.body.classList.add('obsidian');
     const shell = components.shell(home, active);
     const app = document.createElement('div');
     app.className = 'app-window';
