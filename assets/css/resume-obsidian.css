@@ -14,6 +14,14 @@
   .project {border:1px solid #d9dde359;border-radius:16px;padding:14px;}
   .skill {border-radius:20px;}
   a:focus-visible {outline:2px solid #f5f6f7;outline-offset:4px;}
+  .project:focus-within {border-color:#edf0f3a6;box-shadow:inset 1px 1px 2px #ffffffe6,0 0 24px #ffffff1c;}
+  @media(hover:hover) and (pointer:fine) {
+    .project {transition:translate 240ms ease,border-color 220ms ease,box-shadow 220ms ease;}
+    .project:hover {border-color:#edf0f3a6;box-shadow:inset 1px 1px 2px #ffffffe6,0 0 24px #ffffff1c;}
+  }
+  @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+    .project:hover {translate:0 -3px;}
+  }
 }
 @media print {
   :root {color-scheme:light;--canvas:#fff;--paper:#fff;--ink:#151619;--muted:#4e5259;--subtle:#5b6068;--accent:#24272d;--accent-soft:#eeeeef;--side:#f5f5f5;--line:#ccc;}

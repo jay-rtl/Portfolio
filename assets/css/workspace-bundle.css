@@ -1277,8 +1277,15 @@ body.mobile-menu-open {overflow:hidden;}
 }
 .obsidian .workspace-main :is(.profile-card,.biography,.founder-note,.timeline-panel,.feedback-panel,.ticket-form,.inline-cta,.cta),
 .obsidian .ticket-context>.glass-panel {padding:28px;}
-.obsidian .service-grid {display:grid;grid-template-columns:1fr;gap:20px;}
-.obsidian .service-collection .service-module {padding:30px;}
+.obsidian .service-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
+.obsidian .service-collection .service-module {grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto auto 1fr auto;gap:8px 14px;padding:20px 22px;translate:none;}
+.obsidian .service-collection .panel-topline {grid-column:1;grid-row:1/3;gap:8px;}
+.obsidian .service-collection .module-symbol {width:36px;height:36px;}
+.obsidian .service-collection .service-module h3 {grid-column:2;grid-row:1;font-size:21px;line-height:1.3;max-width:none;}
+.obsidian .service-collection .service-summary {grid-column:2;grid-row:2;max-width:none;font-size:13px;line-height:1.7;}
+.obsidian .service-collection details {grid-column:1/-1;grid-row:3;margin-top:6px;border-top:1px solid var(--line);}
+.obsidian .service-collection summary {padding:8px 0;min-height:38px;}
+.obsidian .service-collection .service-action {grid-column:1/-1;grid-row:4;max-width:none;padding:6px 0 0;}
 .obsidian .service-collection .service-module:hover {background:var(--container-gradient),var(--container-base);border-color:#d9dde38c;}
 .obsidian .stack-catalog {gap:20px;}
 .obsidian .workspace-main .stack-catalog>.glass-panel {padding:24px;}
@@ -1307,11 +1314,23 @@ body.mobile-menu-open {overflow:hidden;}
 }
 .obsidian .workspace-main .price-card.featured {border-color:#e5e8ee99;}
 .obsidian .case-image .browser {border-radius:12px;}
+@media(min-width:1000px) {
+  .obsidian .service-grid {align-items:start;}
+  .obsidian .service-collection .service-module {grid-template-columns:48px minmax(0,1fr) auto;grid-template-rows:auto auto auto;}
+  .obsidian .service-collection .service-module h3,.obsidian .service-collection .service-summary {grid-column:2/-1;}
+  .obsidian .service-collection details {grid-column:1/3;}
+  .obsidian .service-collection .service-action {grid-column:3;grid-row:3;align-self:start;margin-top:6px;padding-top:8px;border-top:1px solid var(--line);gap:12px;}
+  .obsidian .service-collection details[open] {grid-column:1/-1;}
+  .obsidian .service-collection details[open]~.service-action {grid-column:1/-1;grid-row:4;margin-top:0;border-top:0;}
+}
+@media(max-width:999px) {
+  .obsidian .service-grid {grid-template-columns:1fr;}
+}
 @media(max-width:760px) {
   :root,html[data-theme=dark] {--container-radius:20px;}
   .obsidian .workspace-main :is(.profile-card,.biography,.founder-note,.timeline-panel,.feedback-panel,.ticket-form,.inline-cta,.cta),
   .obsidian .ticket-context>.glass-panel {padding:20px;}
-  .obsidian .service-collection .service-module {padding:22px 20px;}
+  .obsidian .service-collection .service-module {padding:18px 20px;}
   .obsidian .stack-catalog {grid-template-columns:1fr;gap:16px;}
   .obsidian .workspace-main .stack-catalog>.glass-panel {padding:20px;}
   .obsidian .module-grid {gap:16px;}
@@ -1321,4 +1340,114 @@ body.mobile-menu-open {overflow:hidden;}
   .obsidian .mobile-project-card-copy {padding:20px 0 0;}
   .obsidian .case-features>article {padding:20px;}
   .obsidian .mobile-navigation a[aria-current] {background:var(--container-gradient);box-shadow:inset 1px 1px 2px #ffffff59;}
+}
+
+/* Hover uses independent translate, preserving GSAP reveals and 3D transforms. */
+.obsidian .workspace-main :is(.glass-panel,.card,.mobile-project-card,.case-image,.cta):focus-within,
+.obsidian .hero-showcase:focus-within {
+  border-color:#edf0f3a6;
+  box-shadow:inset 1px 1px 2px #ffffffe6,0 0 24px #ffffff1c,0 12px 28px #0005;
+}
+@media(hover:hover) and (pointer:fine) {
+  .obsidian .workspace-main :is(.glass-panel,.card,.mobile-project-card,.case-image,.cta),
+  .obsidian .case-features>article,.obsidian .workflow>li,.obsidian .hero-showcase {
+    transition:border-color 220ms var(--motion-ease),box-shadow 220ms var(--motion-ease),translate 240ms var(--motion-ease);
+  }
+  .obsidian .workspace-main :is(.glass-panel,.card,.mobile-project-card,.case-image,.cta):hover,
+  .obsidian .case-features>article:hover,.obsidian .workflow>li:hover,.obsidian .hero-showcase:hover {
+    border-color:#edf0f3a6;
+    box-shadow:inset 1px 1px 2px #ffffffe6,0 0 24px #ffffff1c,0 12px 28px #0005;
+  }
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .obsidian .workspace-main :is(.service-module,.card,.mobile-project-card,.case-image,.cta,.profile-card,.biography,.founder-note,.system-project,.compact-module,.inline-cta):hover,
+  .obsidian .case-features>article:hover,.obsidian .workflow>li:hover,.obsidian .hero-showcase:hover {translate:0 -3px;}
+}
+
+/* Content-sized About and Skills layouts, without oversized empty panels. */
+.obsidian[data-workspace=about] .profile-editorial {grid-template-columns:minmax(0,1fr) minmax(260px,.36fr);align-items:start;gap:16px;}
+.obsidian[data-workspace=about] .profile-editorial .profile-card {grid-template-columns:128px minmax(0,1fr) auto;gap:22px;padding:22px;}
+.obsidian[data-workspace=about] .profile-portrait img {width:128px;height:128px;}
+.obsidian[data-workspace=about] .profile-identity h3 {font-size:30px;margin:8px 0;}
+.obsidian[data-workspace=about] .profile-specialties {margin-bottom:10px;}
+.obsidian[data-workspace=about] .profile-location {margin-bottom:8px;}
+.obsidian[data-workspace=about] .profile-editorial .biography {grid-template-columns:220px minmax(0,1fr);gap:20px;padding:22px;}
+.obsidian[data-workspace=about] .biography-heading h3 {font-size:25px;line-height:1.25;margin-top:12px;}
+.obsidian[data-workspace=about] .biography-copy p {line-height:1.75;margin-bottom:10px;}
+.obsidian[data-workspace=about] .profile-editorial .founder-note {display:block;padding:22px;}
+.obsidian[data-workspace=about] .founder-note h3 {font-size:25px;line-height:1.2;margin:10px 0 4px;}
+.obsidian[data-workspace=about] .founder-role {display:block;line-height:1.5;}
+.obsidian[data-workspace=about] .founder-note p {margin-top:14px;max-width:none;line-height:1.75;}
+.obsidian[data-workspace=about] .founder-mark {display:none;}
+.obsidian[data-workspace=about] .timeline-panel {padding:22px;margin-top:16px;}
+.obsidian[data-workspace=about] .profile-timeline {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px;margin-top:18px;}
+.obsidian[data-workspace=about] .profile-timeline::before {display:none;}
+.obsidian[data-workspace=about] .profile-timeline li {grid-template-columns:105px minmax(0,1fr);gap:14px;padding:0;align-items:start;}
+.obsidian[data-workspace=about] .profile-timeline li>div {padding-left:16px;}
+.obsidian[data-workspace=about] .profile-timeline h4 {font-size:14px;line-height:1.4;margin-bottom:4px;}
+.obsidian[data-workspace=about] .profile-timeline p {line-height:1.65;margin-top:4px;}
+.obsidian[data-workspace=about] #background>section {padding:24px 0;}
+.obsidian[data-workspace=about] #background .wrap {max-width:none;}
+.obsidian[data-workspace=about] #background .grid {gap:16px;}
+.obsidian[data-workspace=about] #background :is(.process-card,.skill-card,.info-card) {padding:18px;}
+.obsidian[data-workspace=about] #background .card h3 {font-size:16px;line-height:1.4;margin-bottom:10px;}
+.obsidian[data-workspace=about] #background .card p {line-height:1.65;}
+.obsidian[data-workspace=about] .process-card::before {margin-bottom:12px;}
+.obsidian[data-workspace=about] .knowledge-grid {grid-template-columns:repeat(4,minmax(0,1fr));}
+.obsidian[data-workspace=about] .skill-card ul {gap:8px 16px;line-height:1.6;}
+.obsidian[data-workspace=about] :is(.process-grid,.credentials-grid) {grid-template-columns:repeat(5,minmax(0,1fr));}
+
+.obsidian[data-workspace=stack] .workspace-main {display:grid;grid-template-columns:minmax(280px,.65fr) minmax(0,1.35fr);gap:20px;align-items:start;align-content:start;}
+.obsidian[data-workspace=stack] .workspace-heading {grid-column:1/-1;margin-bottom:0;}
+.obsidian[data-workspace=stack] .stack-panel {display:block;grid-column:1;grid-row:2;padding:0;}
+.obsidian[data-workspace=stack] .stack-tabs {flex-direction:row;flex-wrap:wrap;overflow:visible;gap:8px;padding:10px;border-right:0;border-bottom:1px solid var(--line);}
+.obsidian[data-workspace=stack] .stack-tabs button {flex:1 1 120px;min-width:0;white-space:normal;min-height:40px;padding:8px 10px;font-size:11px;gap:6px;}
+.obsidian[data-workspace=stack] .stack-detail {min-height:0;padding:20px;justify-content:flex-start;}
+.obsidian[data-workspace=stack] .stack-detail h3 {font-size:28px;line-height:1.2;margin:6px 0 10px;}
+.obsidian[data-workspace=stack] .stack-detail .chip-list {margin-top:0;}
+.obsidian[data-workspace=stack] .stack-detail .tech-chip {font-size:12px;padding:8px 10px;}
+.obsidian[data-workspace=stack] .stack-catalog {grid-column:2;grid-row:2;gap:14px;margin:0;}
+.obsidian[data-workspace=stack] .workspace-main .stack-catalog>.glass-panel {padding:18px;}
+.obsidian[data-workspace=stack] .stack-catalog .chip-list {margin-top:10px;}
+.obsidian[data-workspace=stack] .stack-catalog .quiet-note {margin:8px 0 0;line-height:1.6;}
+.obsidian[data-workspace=stack] .stack-catalog article.is-related {transform:none;}
+.obsidian[data-workspace=stack] .workspace-main>.text-link {grid-column:2;grid-row:3;}
+@media(min-width:1700px) {
+  .obsidian[data-workspace=stack] .stack-catalog {grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media(max-width:1699px) {
+  .obsidian[data-workspace=about] .skill-card ul {grid-template-columns:1fr;}
+}
+@media(max-width:1399px) {
+  .obsidian[data-workspace=about] .knowledge-grid {grid-template-columns:repeat(3,minmax(0,1fr));}
+  .obsidian[data-workspace=about] :is(.process-grid,.credentials-grid) {grid-template-columns:repeat(3,minmax(0,1fr));}
+  .obsidian[data-workspace=about] .profile-editorial .biography {grid-template-columns:1fr;gap:12px;}
+}
+@media(max-width:1100px) {
+  .obsidian[data-workspace=about] .profile-editorial {grid-template-columns:1fr;}
+  .obsidian[data-workspace=about] .profile-editorial .profile-card {grid-template-columns:128px minmax(0,1fr);}
+  .obsidian[data-workspace=about] .profile-portrait {grid-column:1;grid-row:1/3;}
+  .obsidian[data-workspace=about] .profile-links {grid-column:2;grid-row:2;gap:14px;}
+  .obsidian[data-workspace=about] .profile-editorial .biography {grid-template-columns:200px minmax(0,1fr);}
+  .obsidian[data-workspace=about] .knowledge-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .obsidian[data-workspace=about] .profile-timeline {grid-template-columns:1fr;}
+  .obsidian[data-workspace=stack] .workspace-main {display:block;}
+  .obsidian[data-workspace=stack] .workspace-heading {margin-bottom:24px;}
+  .obsidian[data-workspace=stack] .stack-catalog {margin:16px 0;}
+}
+@media(max-width:760px) {
+  .obsidian[data-workspace=about] .profile-editorial .profile-card {grid-template-columns:1fr;gap:16px;padding:20px;}
+  .obsidian[data-workspace=about] .profile-portrait {grid-column:1;grid-row:auto;}
+  .obsidian[data-workspace=about] .profile-portrait img {width:88px;height:88px;}
+  .obsidian[data-workspace=about] .profile-links {grid-column:1;grid-row:auto;}
+  .obsidian[data-workspace=about] .profile-identity h3 {font-size:27px;}
+  .obsidian[data-workspace=about] .profile-editorial .biography {grid-template-columns:1fr;gap:12px;padding:20px;}
+  .obsidian[data-workspace=about] .profile-timeline {grid-template-columns:1fr;gap:16px;}
+  .obsidian[data-workspace=about] .profile-timeline li {grid-template-columns:1fr;gap:5px;}
+  .obsidian[data-workspace=about] :is(.knowledge-grid,.process-grid,.credentials-grid) {grid-template-columns:1fr;}
+  .obsidian[data-workspace=about] #background>section {padding:20px 0;}
+  .obsidian[data-workspace=stack] .stack-catalog {grid-template-columns:1fr;}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .obsidian .stack-catalog>.glass-panel:hover {translate:0 -3px;}
 }
