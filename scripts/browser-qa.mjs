@@ -107,6 +107,14 @@ try {
     for(const route of routes){
       await visit(route);await overflow(width+' '+route);
       record(await page.locator('h1:visible').count()===1,'Page H1 '+route);
+      if(await page.locator('.case-image .browser img').count()) {
+        const dimensions=await page.locator('.case-image .browser img').evaluate(async img=>{
+          await img.decode();
+          const rect=img.getBoundingClientRect();
+          return {height:rect.height,expected:rect.width*img.naturalHeight/img.naturalWidth};
+        });
+        record(Math.abs(dimensions.height-dimensions.expected)<1,'Proportional case screenshot '+width+' '+route);
+      }
       for(const url of await page.locator('a[href]').evaluateAll(els=>els.map(el=>el.href))){const u=new URL(url);if(u.origin===new URL(base).origin)links.add(u.pathname);}
       // AXE is scoped to representative templates; all routes get layout and console checks.
       if(['/','/contact/','/about/','/resume/','/pricing/','/work/serviceflow/'].includes(route)){

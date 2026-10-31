@@ -14,6 +14,11 @@
   --radius:8px; --sidebar-width:176px; --glass:linear-gradient(130deg,#ffffff09,#ffffff01);
   --shadow:0 16px 50px #0005; --motion-ease:cubic-bezier(.22,1,.36,1);
   --font-ui:'Segoe UI',Arial,Helvetica,sans-serif;
+  --container-gradient:linear-gradient(135deg,#f0f3f54d,#ffffff0b 65%);
+  --container-base:#080a0c; --container-border:#d9dde359;
+  --container-shadow:inset 1px 1px 2px #ffffffbd,0 0 16px #ffffff10;
+  --container-radius:24px;
+  --container-control:linear-gradient(135deg,#f0f3f51c,#ffffff05 65%);
 }
 html {background:#050505;scroll-padding-top:100px;}
 body.obsidian {background:#050505;color:var(--text);font-size:15px;line-height:1.7;}
@@ -53,7 +58,7 @@ body.mobile-menu-open {overflow:hidden;}
 .obsidian .workspace-nav a {min-height:48px;padding:10px 13px;gap:11px;border-radius:28px;color:#c2c6cd;border:1px solid transparent;font-size:12px;}
 .obsidian .workspace-nav a .ui-icon {width:20px;height:20px;color:inherit;opacity:1;}
 .obsidian .workspace-nav a small {border:0;padding:0;margin-left:auto;font-size:8px;color:#c2c6cd;}
-.obsidian .workspace-nav a[aria-current] {color:#fff;background:linear-gradient(135deg,#f0f3f54d,#ffffff0b 65%);border-color:#d9dde359;box-shadow:inset 1px 1px 2px #ffffffbd,0 0 16px #ffffff10;}
+.obsidian .workspace-nav a[aria-current] {color:#fff;background:var(--container-gradient);border-color:var(--container-border);box-shadow:var(--container-shadow);}
 .obsidian .workspace-nav a[aria-current]::before {display:none;}
 .obsidian .workspace-nav a:hover {background-color:#ffffff0a;color:#fff;}
 .obsidian .sidebar-resources {padding-top:12px;margin-top:14px;border-color:#ffffff26;display:flex;justify-content:center;gap:2px;}
@@ -542,4 +547,62 @@ body.mobile-menu-open {overflow:hidden;}
   html {scroll-behavior:auto!important;}
   .obsidian *, .obsidian *::before, .obsidian *::after {animation:none!important;transition:none!important;scroll-behavior:auto!important;}
   .hero-showcase {transform:none;}
+}
+
+/* One silver/charcoal material, shared with the active navigation item. */
+.obsidian .workspace-main :is(.glass-panel,.card,.mobile-project-card,.case-image,.cta),
+.obsidian .case-features>article,.obsidian .workflow>li,
+.obsidian .hero-showcase,.obsidian .command-dialog {
+  --muted:#c8cdd4; --subtle:#c3c8cf;
+  background:var(--container-gradient),var(--container-base);
+  border:1px solid var(--container-border);
+  border-radius:var(--container-radius);
+  box-shadow:var(--container-shadow);
+}
+.obsidian .workspace-main :is(.profile-card,.biography,.founder-note,.timeline-panel,.feedback-panel,.ticket-form,.inline-cta,.cta),
+.obsidian .ticket-context>.glass-panel {padding:28px;}
+.obsidian .service-grid {display:grid;grid-template-columns:1fr;gap:20px;}
+.obsidian .service-collection .service-module {padding:30px;}
+.obsidian .service-collection .service-module:hover {background:var(--container-gradient),var(--container-base);border-color:#d9dde38c;}
+.obsidian .stack-catalog {gap:20px;}
+.obsidian .workspace-main .stack-catalog>.glass-panel {padding:24px;}
+.obsidian .case-features>article {padding:24px;}
+.obsidian .workflow>li {padding:20px;}
+.obsidian .module-grid {gap:20px;}
+.obsidian .compact-module {padding:24px;}
+.obsidian .workspace-main .project-explorer {overflow:hidden;}
+.obsidian .explorer-list,.obsidian .stack-tabs {background:#ffffff04;}
+.obsidian .workspace-main .project-window,
+.obsidian :is(.architecture-description,.flow-description,.flow-node,.explorer-search),
+.obsidian .field :is(input,select,textarea) {
+  background:var(--container-control),var(--container-base);
+  border:1px solid var(--container-border);
+  border-radius:12px;
+  box-shadow:inset 1px 1px 1px #ffffff33;
+}
+.obsidian .workspace-main .project-window:hover {border-color:#d9dde38c;box-shadow:var(--container-shadow);}
+.obsidian :is(.architecture-steps button,.stack-tabs button,.feedback-selectors button) {
+  background:var(--container-control),var(--container-base);
+  border-color:var(--container-border);border-radius:12px;
+}
+.obsidian :is(.project-options>button[aria-selected=true],.stack-tabs button[aria-selected=true],.feedback-selectors button[aria-pressed=true],.architecture-steps button.is-related) {
+  background:var(--container-gradient),var(--container-base);
+  border-color:#d9dde38c;box-shadow:var(--container-shadow);color:#fff;
+}
+.obsidian .workspace-main .price-card.featured {border-color:#e5e8ee99;}
+.obsidian .case-image .browser {border-radius:12px;}
+@media(max-width:760px) {
+  :root {--container-radius:20px;}
+  .obsidian .workspace-main :is(.profile-card,.biography,.founder-note,.timeline-panel,.feedback-panel,.ticket-form,.inline-cta,.cta),
+  .obsidian .ticket-context>.glass-panel {padding:20px;}
+  .obsidian .service-collection .service-module {padding:22px 20px;}
+  .obsidian .stack-catalog {grid-template-columns:1fr;gap:16px;}
+  .obsidian .workspace-main .stack-catalog>.glass-panel {padding:20px;}
+  .obsidian .module-grid {gap:16px;}
+  .obsidian .workspace-main .project-explorer {padding:0;background:none;border:0;box-shadow:none;overflow:visible;}
+  .obsidian .mobile-project-gallery {padding:0;}
+  .obsidian .mobile-project-card {padding:20px;}
+  .obsidian .mobile-project-card-copy {padding:20px 0 0;}
+  .obsidian .case-features>article {padding:20px;}
+  .obsidian .mobile-navigation a[aria-current] {background:var(--container-gradient);box-shadow:inset 1px 1px 2px #ffffff59;}
 }

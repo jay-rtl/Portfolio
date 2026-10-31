@@ -4,7 +4,7 @@
 .case-facts dd { margin: 0; color: var(--text); font-size: 13px; max-width: 330px; }
 .case-image-section { padding: 0 0 56px; }
 .case-image { display: block; background: #242723; padding: 48px; border-radius: 4px; }
-.case-image .browser img { aspect-ratio: auto; width: 100%; object-fit: contain; }
+.case-image .browser img { aspect-ratio: auto; width: 100%; height: auto; object-fit: contain; }
 .case-image .browser-bar { height: 34px; }
 .case-image .browser-bar small { font-size: 10px; }
 .case-section { padding: 72px 0; }

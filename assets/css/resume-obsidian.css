@@ -5,6 +5,14 @@
   .page {box-shadow:0 24px 80px #0006;}
   .top::after {content:'FJR.';font-size:18px;font-style:italic;}
   .skill {color:#e3e5e8;}
+  .page {border-color:#d9dde359;border-radius:24px;box-shadow:inset 1px 1px 2px #ffffffbd,0 0 16px #ffffff10;}
+  .top,.project,.skill {
+    background:linear-gradient(135deg,#f0f3f54d,#ffffff0b 65%),#080a0c;
+    border-color:#d9dde359;box-shadow:inset 1px 1px 2px #ffffffbd,0 0 16px #ffffff10;
+  }
+  .projects {gap:12px;}
+  .project {border:1px solid #d9dde359;border-radius:16px;padding:14px;}
+  .skill {border-radius:20px;}
   a:focus-visible {outline:2px solid #f5f6f7;outline-offset:4px;}
 }
 @media print {
