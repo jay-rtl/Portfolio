@@ -592,7 +592,7 @@ body.mobile-menu-open {overflow:hidden;}
 .obsidian .workspace-main .price-card.featured {border-color:#e5e8ee99;}
 .obsidian .case-image .browser {border-radius:12px;}
 @media(max-width:760px) {
-  :root {--container-radius:20px;}
+  :root,html[data-theme=dark] {--container-radius:20px;}
   .obsidian .workspace-main :is(.profile-card,.biography,.founder-note,.timeline-panel,.feedback-panel,.ticket-form,.inline-cta,.cta),
   .obsidian .ticket-context>.glass-panel {padding:20px;}
   .obsidian .service-collection .service-module {padding:22px 20px;}
